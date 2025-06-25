@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
+
+:root {
+  --accent-color: forestgreen;
+  --hover-color: darkgreen;
+  --light-bg: #f5f5f5;
+  --dark-text: #333;
+}
+
+.pink-theme {
+  --accent-color: #f8adb9;
+  --hover-color: #f060a8;
+  --light-bg: #fff0f5;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--dark-text);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+
+  color: lightgrey;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+button:disabled {
+  color: #d3d3d3;
+}
+
+img {
+  object-fit: contain;
+}
+
+input {
+  border-radius: 5px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--hover-color);
+}
+
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+  accent-color: var(--hover-color);
+}
+
+input[type='text'],
+input[type='password'] {
+  border-color: var(--accent-color);
+}
+
+li::marker {
+  color: var(--accent-color);
+}
+
+select {
+  height: 30px;
+
+  border-color: var(--accent-color);
+  border-radius: 5px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--hover-color);
+}
+
+textarea {
+  resize: vertical;
+  border-color: var(--accent-color);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--hover-color);
+}
+
+.transparent-btn {
+  background: none;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s;
+  font-weight: 500;
+  color: var(--dark-text);
+  border: none;
+}
+
+.transparent-btn:hover {
+  color: var(--hover-color);
+  transition: color 0.3s;
+}
