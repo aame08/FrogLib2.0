@@ -1,0 +1,122 @@
+[
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetBestSellingAsync",
+    "RelativePath": "api/Books/best-selling",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.BookDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetNewBooksAsync",
+    "RelativePath": "api/Books/new-books",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.BookDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetPopularBooksAsync",
+    "RelativePath": "api/Books/popular-books",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.BookDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.CollectionsController",
+    "Method": "GetPopularCollectionsAsync",
+    "RelativePath": "api/Collections/popular-collections",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.CollectionDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.ReviewsController",
+    "Method": "GetPopularReviewsAsync",
+    "RelativePath": "api/Reviews/popular-reviews",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.ReviewDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserActivityController",
+    "Method": "GetStatistics",
+    "RelativePath": "api/UserActivity/get-statistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "FrogLib.Server.DTOs.StatisticInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

@@ -3,8 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\controllers\\useractivitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\controllers\\useractivitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\controllers\\collectionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\controllers\\collectionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\services\\collectionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\services\\collectionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\dtos\\collectiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\dtos\\collectiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\services\\booksservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\services\\booksservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\services\\baseentityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\services\\baseentityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\services\\reviewsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\services\\reviewsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\dtos\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\dtos\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|c:\\users\\vikak\\source\\repos\\froglib2.0\\froglib.server\\dtos\\bookdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30B4999E-A95A-485F-98EB-BE6FB13996A1}|FrogLib.Server\\FrogLib.Server.csproj|solutionrelative:froglib.server\\dtos\\bookdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +54,152 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "FrogLib.Server\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "FrogLib.Server\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "BooksController.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\BooksController.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Controllers\\BooksController.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\BooksController.cs",
+              "RelativeToolTip": "FrogLib.Server\\Controllers\\BooksController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-25T08:32:03.82Z",
+              "WhenOpened": "2025-06-26T10:23:08.377Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ReviewsController.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\ReviewsController.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Controllers\\ReviewsController.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\ReviewsController.cs",
+              "RelativeToolTip": "FrogLib.Server\\Controllers\\ReviewsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T10:23:34.81Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CollectionsController.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\CollectionsController.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Controllers\\CollectionsController.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\CollectionsController.cs",
+              "RelativeToolTip": "FrogLib.Server\\Controllers\\CollectionsController.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAYwEMAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T12:19:43.011Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserActivityController.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\UserActivityController.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Controllers\\UserActivityController.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Controllers\\UserActivityController.cs",
+              "RelativeToolTip": "FrogLib.Server\\Controllers\\UserActivityController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T14:14:44.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CollectionDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\CollectionDTO.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\DTOs\\CollectionDTO.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\CollectionDTO.cs",
+              "RelativeToolTip": "FrogLib.Server\\DTOs\\CollectionDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T12:22:37.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CollectionsService.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\CollectionsService.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Services\\CollectionsService.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\CollectionsService.cs",
+              "RelativeToolTip": "FrogLib.Server\\Services\\CollectionsService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T12:20:31.36Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BookDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\BookDTO.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\DTOs\\BookDTO.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\BookDTO.cs",
+              "RelativeToolTip": "FrogLib.Server\\DTOs\\BookDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T11:05:29.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BooksService.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\BooksService.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Services\\BooksService.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\BooksService.cs",
+              "RelativeToolTip": "FrogLib.Server\\Services\\BooksService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T10:47:06.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ReviewsService.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\ReviewsService.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Services\\ReviewsService.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\ReviewsService.cs",
+              "RelativeToolTip": "FrogLib.Server\\Services\\ReviewsService.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBUAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T10:34:09.826Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ReviewDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\ReviewDTO.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\DTOs\\ReviewDTO.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\DTOs\\ReviewDTO.cs",
+              "RelativeToolTip": "FrogLib.Server\\DTOs\\ReviewDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T10:33:36.588Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BaseEntityService.cs",
+              "DocumentMoniker": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\BaseEntityService.cs",
+              "RelativeDocumentMoniker": "FrogLib.Server\\Services\\BaseEntityService.cs",
+              "ToolTip": "C:\\Users\\vikak\\source\\repos\\FrogLib2.0\\FrogLib.Server\\Services\\BaseEntityService.cs",
+              "RelativeToolTip": "FrogLib.Server\\Services\\BaseEntityService.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAYwCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-26T10:19:18.5Z",
               "EditorCaption": ""
             }
           ]

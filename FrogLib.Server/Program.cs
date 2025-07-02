@@ -1,4 +1,5 @@
 ﻿using FrogLib.Server.Models;
+using FrogLib.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -14,11 +15,11 @@ internal class Program
                 builder.Configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-        //builder.Services.AddScoped<IBooksService, BooksService>();
-        //builder.Services.AddScoped<ICollectionsService, CollectionsService>();
-        //builder.Services.AddScoped<IReviewsService, ReviewsService>();
-        //builder.Services.AddScoped(provider =>
-        //    new Lazy<IBooksService>(provider.GetRequiredService<IBooksService>));
+        builder.Services.AddScoped<IBooksService, BooksService>();
+        builder.Services.AddScoped<ICollectionsService, CollectionsService>();
+        builder.Services.AddScoped<IReviewsService, ReviewsService>();
+        builder.Services.AddScoped(provider =>
+            new Lazy<IBooksService>(provider.GetRequiredService<IBooksService>));
 
         //builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
         //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -122,3 +122,5 @@ C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\refint\Fr
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\FrogLib.Server.pdb
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\FrogLib.Server.genruntimeconfig.cache
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\ref\FrogLib.Server.dll
+C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\bin\Debug\net8.0\FrogLib.Server.staticwebassets.runtime.json
+C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\FrogLib.Server.sourcelink.json
