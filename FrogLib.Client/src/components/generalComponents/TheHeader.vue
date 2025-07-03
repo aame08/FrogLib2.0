@@ -1,5 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import authService from '@/services/authService';
+import { getAvatarUrl } from '@/utils/imageUser';
+
 import frogLogo from '@/assets/frog.png';
 import frog2Logo from '@/assets/frog2.png';
 
@@ -9,6 +15,18 @@ const showLoginModal = ref(false);
 const showRegisterModal = ref(false);
 const showForgotPasswordModal = ref(false);
 const isClosing = ref(false);
+const message = ref('');
+const errors = ref({});
+const showUserMenu = ref(false);
+// const user = computed(() => store.state.auth.user);
+
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
+const user = computed(() => store.getters['auth/user']);
+const userRole = computed(() => user.value?.nameRole || '');
 
 const loginForm = ref({
   email: '',
@@ -16,11 +34,11 @@ const loginForm = ref({
 });
 
 const registerForm = ref({
-  name: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-  avatar: null,
+  nameUser: '',
+  loginUser: '',
+  newPassword: '',
+  confirmPassword: '',
+  profileImageUrl: null,
 });
 
 const forgotPasswordForm = ref({
@@ -46,36 +64,191 @@ const toggleTheme = () => {
 };
 
 const handleAvatarUpload = (event) => {
-  registerForm.value.avatar = event.target.files[0];
+  const file = event.target.files[0];
+  if (file) {
+    registerForm.value.profileImageUrl = file;
+  }
 };
 
-const submitLogin = () => {
-  console.log('Login form submitted:', loginForm.value);
-  // showLoginModal.value = false;
+const submitLogin = async () => {
+  errors.value = {};
+
+  let isValid = true;
+
+  if (loginForm.value.email === '') {
+    errors.value.email = 'Электронная почта не может быть пустой.';
+    isValid = false;
+  }
+  if (loginForm.value.password === '') {
+    errors.value.password = 'Пароль не может быть пустым.';
+    isValid = false;
+  }
+
+  if (!isValid) {
+    return;
+  }
+
+  try {
+    const response = await authService.login(
+      loginForm.value.email,
+      loginForm.value.password
+    );
+
+    store.commit('auth/setTokens', {
+      accessToken: response.data.accessToken,
+      refreshToken: response.data.refreshToken,
+    });
+
+    store.commit('auth/setUser', response.data.user);
+
+    message.value = 'С возвращением.';
+
+    loginForm.value.email = '';
+    loginForm.value.password = '';
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.errors
+    ) {
+      const serverErrors = error.response.data.errors;
+      if (serverErrors.Unauthorized) {
+        errors.value.email = serverErrors.Unauthorized[0];
+      }
+      if (serverErrors.InvalidPassword) {
+        errors.value.password = serverErrors.InvalidPassword[0];
+      }
+      if (serverErrors.BannedUser) {
+        errors.value.ban = serverErrors.BannedUser[0];
+      }
+    } else {
+      message.value = 'Ошибка аутентификации.';
+    }
+  }
 };
 
-const submitRegister = () => {
-  console.log('Register form submitted:', registerForm.value);
-  // showRegisterModal.value = false;
+const submitRegister = async () => {
+  errors.value = {};
+
+  let isValid = true;
+
+  if (registerForm.value.newPassword !== registerForm.value.confirmPassword) {
+    errors.value.confirmPassword = 'Пароли не совпадают.';
+    isValid = false;
+  }
+  if (registerForm.value.nameUser === '') {
+    errors.value.username = 'Имя пользователя не может быть пустым.';
+    isValid = false;
+  }
+  if (registerForm.value.loginUser === '') {
+    errors.value.email = 'Электронная почта не может быть пустой.';
+    isValid = false;
+  }
+  if (registerForm.value.newPassword === '') {
+    errors.value.password = 'Пароль не может быть пустым.';
+    isValid = false;
+  }
+
+  if (registerForm.value.newPassword.length < 8) {
+    errors.value.password = 'Пароль должен состоять от 8 символов.';
+    isValid = false;
+  }
+
+  if (!isValid) {
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('NameUser', registerForm.value.nameUser);
+    formData.append('LoginUser', registerForm.value.loginUser);
+    formData.append('NewPassword', registerForm.value.newPassword);
+    formData.append('ConfirmPassword', registerForm.value.confirmPassword);
+
+    if (registerForm.value.profileImageUrl) {
+      formData.append('ProfileImageUrl', registerForm.value.profileImageUrl);
+    }
+
+    const response = await authService.register(formData);
+
+    if (response.status === 201) {
+      message.value = 'Регистрация прошла успешно.';
+
+      registerForm.value.nameUser = '';
+      registerForm.value.loginUser = '';
+      registerForm.value.newPassword = '';
+      registerForm.value.confirmPassword = '';
+      registerForm.value.profileImageUrl = null;
+    }
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.errors
+    ) {
+      const serverErrors = error.response.data.errors;
+      if (serverErrors.NameUser) {
+        errors.value.username = serverErrors.NameUser[0];
+      }
+      if (serverErrors.LoginUser) {
+        errors.value.email = serverErrors.LoginUser[0];
+      }
+      if (serverErrors.ConfirmPassword) {
+        errors.value.confirmPassword = serverErrors.ConfirmPassword[0];
+      }
+    } else {
+      message.value = 'Ошибка регистрации.';
+    }
+  }
 };
 
-const submitForgotPassword = () => {
-  console.log('Forgot password form submitted:', forgotPasswordForm.value);
-  // showForgotPasswordModal.value = false;
+const submitForgotPassword = async () => {
+  errors.value = {};
+
+  if (forgotPasswordForm.value.email === '') {
+    errors.value.email = 'Введите электронную почту.';
+    return;
+  }
+
+  try {
+    const response = await authService.resetPassword(
+      forgotPasswordForm.value.email
+    );
+
+    message.value =
+      response.data.message || 'Новый пароль отправлен на электронную почту.';
+
+    forgotPasswordForm.value.email = '';
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data?.errors) {
+        errors.value = error.response.data.errors;
+      } else {
+        message.value =
+          error.response.data?.message || 'Произошла ошибка при сбросе пароля';
+      }
+    } else {
+      message.value = 'Не удалось подключиться к серверу';
+    }
+    console.error('Ошибка сброса пароля:', error);
+  }
 };
 
 const switchToLogin = () => {
+  message.value = '';
   showRegisterModal.value = false;
   showForgotPasswordModal.value = false;
   setTimeout(() => (showLoginModal.value = true), 300);
 };
 
 const switchToRegister = () => {
+  message.value = '';
   showLoginModal.value = false;
   setTimeout(() => (showRegisterModal.value = true), 300);
 };
 
 const openForgotPassword = () => {
+  message.value = '';
   showLoginModal.value = false;
   setTimeout(() => (showForgotPasswordModal.value = true), 300);
 };
@@ -100,6 +273,12 @@ onMounted(() => {
     document.querySelector('link[rel="icon"]').href = '/frog2.ico';
   }
 });
+
+const logout = () => {
+  message.value = '';
+  store.dispatch('auth/logout');
+  router.push('/');
+};
 </script>
 
 <template>
@@ -119,12 +298,49 @@ onMounted(() => {
     </div>
 
     <div class="right-container">
-      <button @click="showLoginModal = true" class="transparent-btn">
-        Войти
-      </button>
-      <button @click="showRegisterModal = true" class="transparent-btn">
-        Зарегистрироваться
-      </button>
+      <template v-if="!isAuthenticated">
+        <button @click="showLoginModal = true" class="transparent-btn">
+          Войти
+        </button>
+        <button @click="showRegisterModal = true" class="transparent-btn">
+          Зарегистрироваться
+        </button>
+      </template>
+
+      <template v-else>
+        <div class="user-menu-container">
+          <button
+            class="user-profile-btn"
+            @click="showUserMenu = !showUserMenu"
+          >
+            <span class="user-name">{{ user.nameUser }}</span>
+            <img
+              :src="getAvatarUrl(user.profileImageUrl)"
+              class="user-avatar"
+              alt="Аватар"
+            />
+          </button>
+
+          <transition name="fade">
+            <div v-if="showUserMenu" class="user-menu">
+              <!-- <button @click="router.push('/account')" class="user-menu-item">
+                Аккаунт
+              </button> -->
+              <button class="user-menu-item" v-if="userRole === 'Пользователь'">
+                Аккаунт
+              </button>
+              <!-- <button @click="router.push('/settings')" class="user-menu-item">
+                Настройки
+              </button> -->
+              <button class="user-menu-item">Настройки</button>
+              <button @click="logout" class="user-menu-item logout">
+                Выйти
+              </button>
+            </div>
+          </transition>
+        </div>
+      </template>
+
       <button @click="toggleTheme" class="theme-toggle" title="Поменять тему">
         {{ isPinkTheme ? '🌸' : '🌿' }}
       </button>
@@ -142,6 +358,7 @@ onMounted(() => {
             <button class="close-btn" @click="closeModal('login')">×</button>
           </div>
           <div class="modal-body">
+            <div v-if="message" class="message">{{ message }}</div>
             <form @submit.prevent="submitLogin">
               <div class="form-group">
                 <label for="login-email">Электронная почта</label>
@@ -151,7 +368,11 @@ onMounted(() => {
                   type="email"
                   required
                   placeholder="Введите вашу электронную почту"
+                  :class="{ 'input-error': errors.login }"
                 />
+                <div v-if="errors.email" class="error-message">
+                  {{ errors.email }}
+                </div>
               </div>
               <div class="form-group">
                 <label for="login-password">Пароль</label>
@@ -161,7 +382,14 @@ onMounted(() => {
                   type="password"
                   required
                   placeholder="Введите ваш пароль"
+                  :class="{ 'input-error': errors.password }"
                 />
+                <div v-if="errors.password" class="error-message">
+                  {{ errors.password }}
+                </div>
+              </div>
+              <div v-if="errors.ban" class="error-message">
+                {{ errors.ban }}
               </div>
               <button type="submit" class="submit-btn">Войти</button>
               <div class="form-footer">
@@ -196,36 +424,50 @@ onMounted(() => {
             <button class="close-btn" @click="closeModal('register')">×</button>
           </div>
           <div class="modal-body">
+            <div v-if="message" class="message">{{ message }}</div>
             <form @submit.prevent="submitRegister">
               <div class="form-group">
                 <label for="register-name">Имя пользователя</label>
                 <input
                   id="register-name"
-                  v-model="registerForm.name"
+                  v-model="registerForm.nameUser"
                   type="text"
                   required
                   placeholder="Введите ваше имя"
+                  :class="{ 'input-error': errors.username }"
                 />
+                <div v-if="errors.username" class="error-message">
+                  {{ errors.username }}
+                </div>
               </div>
+
               <div class="form-group">
                 <label for="register-email">Электронная почта</label>
                 <input
                   id="register-email"
-                  v-model="registerForm.email"
+                  v-model="registerForm.loginUser"
                   type="email"
                   required
                   placeholder="Введите вашу электронную почту"
+                  :class="{ 'input-error': errors.email }"
                 />
+                <div v-if="errors.email" class="error-message">
+                  {{ errors.email }}
+                </div>
               </div>
               <div class="form-group">
                 <label for="register-password">Пароль</label>
                 <input
                   id="register-password"
-                  v-model="registerForm.password"
+                  v-model="registerForm.newPassword"
                   type="password"
                   required
                   placeholder="Введите пароль"
+                  :class="{ 'input-error': errors.password }"
                 />
+                <div v-if="errors.password" class="error-message">
+                  {{ errors.password }}
+                </div>
               </div>
               <div class="form-group">
                 <label for="register-password-confirm"
@@ -233,11 +475,15 @@ onMounted(() => {
                 >
                 <input
                   id="register-password-confirm"
-                  v-model="registerForm.password_confirmation"
+                  v-model="registerForm.confirmPassword"
                   type="password"
                   required
                   placeholder="Повторите пароль"
+                  :class="{ 'input-error': errors.confirmPassword }"
                 />
+                <div v-if="errors.confirmPassword" class="error-message">
+                  {{ errors.confirmPassword }}
+                </div>
               </div>
               <div class="form-group">
                 <label for="register-avatar">Изображение</label>
@@ -248,6 +494,9 @@ onMounted(() => {
                   class="input-image"
                   @change="handleAvatarUpload"
                 />
+                <div v-if="errors.profilePicture" class="error-message">
+                  {{ errors.profilePicture }}
+                </div>
               </div>
               <button type="submit" class="submit-btn">
                 Зарегистрироваться
@@ -279,6 +528,7 @@ onMounted(() => {
             <button class="close-btn" @click="closeModal('forgot')">×</button>
           </div>
           <div class="modal-body">
+            <div v-if="message" class="message">{{ message }}</div>
             <form @submit.prevent="submitForgotPassword">
               <div class="form-group">
                 <label for="forgot-email">Электронная почта</label>
@@ -288,7 +538,11 @@ onMounted(() => {
                   type="email"
                   required
                   placeholder="Введите вашу электронную почту"
+                  :class="{ 'input-error': errors.email }"
                 />
+                <div v-if="errors.email" class="error-message">
+                  {{ errors.email }}
+                </div>
               </div>
               <button type="submit" class="submit-btn">
                 Восстановить пароль
@@ -376,7 +630,6 @@ onMounted(() => {
   transform: scale(1.1);
 }
 
-/* Стили для модальных окон с анимациями */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -528,5 +781,89 @@ onMounted(() => {
     opacity: 0;
     transform: translateY(10px);
   }
+}
+
+.user-menu-container {
+  position: relative;
+  margin-right: 10px;
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 20px;
+  background: none;
+  transition: background-color 0.2s;
+}
+
+.user-profile-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--dark-text);
+}
+
+.user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #0000001a;
+}
+
+.user-menu-item {
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  border: none;
+  background: none;
+  transition: background-color 0.2s;
+}
+
+.user-menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-menu-item.logout {
+  color: #dc143c;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.transparent-btn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  transition: color 0.2s;
+}
+
+.transparent-btn:hover {
+  color: var(--accent-color);
 }
 </style>

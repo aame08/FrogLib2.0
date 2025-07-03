@@ -163,3 +163,17 @@ textarea:focus {
   background-color: var(--hover-color);
   transform: scale(1.1);
 }
+
+.error-message {
+  color: #dc143c;
+  font-size: 12px;
+}
+
+.input-error {
+  border-color: #8b0000 !important;
+}
+
+.message {
+  color: #808080;
+  text-align: center;
+}

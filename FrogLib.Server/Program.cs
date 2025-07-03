@@ -1,7 +1,12 @@
-﻿using FrogLib.Server.Models;
+﻿using FrogLib.Server.JWTTokens;
+using FrogLib.Server.Models;
 using FrogLib.Server.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 internal class Program
 {
@@ -21,23 +26,23 @@ internal class Program
         builder.Services.AddScoped(provider =>
             new Lazy<IBooksService>(provider.GetRequiredService<IBooksService>));
 
-        //builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
-        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-        //    {
-        //        var jwtOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
+        builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                var jwtOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
 
-        //        options.TokenValidationParameters = new()
-        //        {
-        //            ValidateIssuer = false,
-        //            ValidateAudience = false,
-        //            ValidateLifetime = true,
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
-        //        };
-        //    });
-        //builder.Services.AddAuthorization();
-        //builder.Services.AddSingleton<JwtProvider>();
+                options.TokenValidationParameters = new()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+                };
+            });
+        builder.Services.AddAuthorization();
+        builder.Services.AddSingleton<JwtProvider>();
         //builder.Services.AddSingleton<ContentModerationService>();
 
         builder.Services.AddCors(options =>

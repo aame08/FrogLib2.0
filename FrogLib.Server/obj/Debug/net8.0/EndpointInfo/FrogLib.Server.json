@@ -5,6 +5,183 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "NameUser": {
+                    "type": "string"
+                  },
+                  "LoginUser": {
+                    "type": "string"
+                  },
+                  "OldPassword": {
+                    "type": "string"
+                  },
+                  "NewPassword": {
+                    "type": "string"
+                  },
+                  "ConfirmPassword": {
+                    "type": "string"
+                  },
+                  "ProfileImageUrl": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "DeleteImage": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "NameUser": {
+                  "style": "form"
+                },
+                "LoginUser": {
+                  "style": "form"
+                },
+                "OldPassword": {
+                  "style": "form"
+                },
+                "NewPassword": {
+                  "style": "form"
+                },
+                "ConfirmPassword": {
+                  "style": "form"
+                },
+                "ProfileImageUrl": {
+                  "style": "form"
+                },
+                "DeleteImage": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Auth/login/{email}/{password}": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/refresh-token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Books/new-books": {
       "get": {
         "tags": [
@@ -227,6 +404,130 @@
   },
   "components": {
     "schemas": {
+      "Author": {
+        "type": "object",
+        "properties": {
+          "idAuthor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "surnameAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "patronymicAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "idBooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "idBook": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isbn13": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPublisher": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idCategory": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "previewLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "titleBook": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionBook": {
+            "type": "string",
+            "nullable": true
+          },
+          "yearPublication": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "languageBook": {
+            "type": "string",
+            "nullable": true
+          },
+          "addedDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "bookratings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bookrating"
+            },
+            "nullable": true
+          },
+          "idCategoryNavigation": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "idPublisherNavigation": {
+            "$ref": "#/components/schemas/Publisher"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            },
+            "nullable": true
+          },
+          "userbooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Userbook"
+            },
+            "nullable": true
+          },
+          "idAuthors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Author"
+            },
+            "nullable": true
+          },
+          "idCollections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Collection"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "BookDTO": {
         "type": "object",
         "properties": {
@@ -269,6 +570,106 @@
           "countView": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Bookrating": {
+        "type": "object",
+        "properties": {
+          "idRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idBook": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idBookNavigation": {
+            "$ref": "#/components/schemas/Book"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "idCategory": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameCategoryEng": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameCategoryRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "idCollection": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "titleCollection": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionCollection": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "statusCollection": {
+            "type": "string",
+            "nullable": true
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          },
+          "likedcollections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Likedcollection"
+            },
+            "nullable": true
+          },
+          "idBooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -326,6 +727,236 @@
           "userURL": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "idComment": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeEntity": {
+            "type": "string",
+            "nullable": true
+          },
+          "textComment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateComment": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parentCommentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statusComment": {
+            "type": "string",
+            "nullable": true
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          },
+          "inverseParentComment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            },
+            "nullable": true
+          },
+          "parentComment": {
+            "$ref": "#/components/schemas/Comment"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Entityrating": {
+        "type": "object",
+        "properties": {
+          "idRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeEntity": {
+            "type": "string",
+            "nullable": true
+          },
+          "isLike": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Likedcollection": {
+        "type": "object",
+        "properties": {
+          "idCollection": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "likedDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "idCollectionNavigation": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "idNotification": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idRecipient": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entityType": {
+            "type": "string",
+            "nullable": true
+          },
+          "entityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "messageNotification": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isRead": {
+            "type": "boolean"
+          },
+          "idRecipientNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Publisher": {
+        "type": "object",
+        "properties": {
+          "idPublisher": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "namePublisher": {
+            "type": "string",
+            "nullable": true
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefreshTokenRequest": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "senderEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "senderPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "idReview": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idBook": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "titleReview": {
+            "type": "string",
+            "nullable": true
+          },
+          "textReview": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "statusReview": {
+            "type": "string",
+            "nullable": true
+          },
+          "idBookNavigation": {
+            "$ref": "#/components/schemas/Book"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
@@ -393,6 +1024,196 @@
           "countCollections": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameRole": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "loginUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "registrationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "statusUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "bookratings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bookrating"
+            },
+            "nullable": true
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Collection"
+            },
+            "nullable": true
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            },
+            "nullable": true
+          },
+          "entityratings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entityrating"
+            },
+            "nullable": true
+          },
+          "likedcollections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Likedcollection"
+            },
+            "nullable": true
+          },
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            },
+            "nullable": true
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            },
+            "nullable": true
+          },
+          "userbooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Userbook"
+            },
+            "nullable": true
+          },
+          "viewhistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Viewhistory"
+            },
+            "nullable": true
+          },
+          "violations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Violation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Userbook": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idBook": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "listType": {
+            "type": "string",
+            "nullable": true
+          },
+          "addedDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "idBookNavigation": {
+            "$ref": "#/components/schemas/Book"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Viewhistory": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeEntity": {
+            "type": "string",
+            "nullable": true
+          },
+          "viewDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Violation": {
+        "type": "object",
+        "properties": {
+          "idViolation": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryViolation": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionViolation": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateViolation": {
+            "type": "string",
+            "format": "date"
+          },
+          "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
