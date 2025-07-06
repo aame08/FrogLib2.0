@@ -1,7 +1,9 @@
 ﻿using FrogLib.Server.DTOs;
 using FrogLib.Server.JWTTokens;
 using FrogLib.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 
@@ -196,6 +198,107 @@ namespace FrogLib.Server.Controllers
             }
             catch (Exception ex) { return HandleException(ex); }
         }
+
+        [Authorize]
+        [HttpPut("update-profile/{idUser}")]
+        public async Task<ActionResult> UpdateProfileAsync(int idUser, [FromForm] UserDTO model)
+        {
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserNotFound", "Пользователь не найден.");
+                }
+
+                if (user.StatusUser == "Заблокирован")
+                {
+                    ModelState.AddModelError("BannedUser", "Вы заблокированы в системе.");
+                }
+
+                if (!string.IsNullOrEmpty(model.NewPassword))
+                {
+                    if (string.IsNullOrEmpty(model.OldPassword))
+                        ModelState.AddModelError("OldPassword", "Требуется текущий пароль.");
+                    else if (!BCrypt.Net.BCrypt.Verify(model.OldPassword, user.PasswordHash))
+                        ModelState.AddModelError("OldPassword", "Неверный текущий пароль.");
+
+                    if (model.NewPassword != model.ConfirmPassword)
+                        ModelState.AddModelError("ConfirmPassword", "Пароли не совпадают.");
+                }
+
+                if (!string.IsNullOrEmpty(model.LoginUser) && model.LoginUser != user.LoginUser)
+                {
+                    if (await _context.Users.AnyAsync(u => u.LoginUser == model.LoginUser))
+                        ModelState.AddModelError("LoginUser", "Почта уже используется.");
+                }
+
+                if (model.DeleteImage == "true" && model.ProfileImageUrl != null)
+                {
+                    ModelState.AddModelError("ProfileImageUrl", "Нельзя одновременно удалять и загружать изображение.");
+                }
+                else if (model.DeleteImage != "true" && model.ProfileImageUrl == null && string.IsNullOrEmpty(user.ProfileImageUrl))
+                {
+                    ModelState.AddModelError("ProfileImageUrl", "Поле ProfileImageUrl является обязательным, если изображение не удаляется.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                    return BadRequest(new { errors });
+                }
+
+                if (!string.IsNullOrEmpty(model.NameUser))
+                    user.NameUser = model.NameUser;
+
+                if (!string.IsNullOrEmpty(model.LoginUser))
+                    user.LoginUser = model.LoginUser;
+
+                if (!string.IsNullOrEmpty(model.NewPassword))
+                    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+
+                if (model.DeleteImage == "true")
+                {
+                    if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+                    {
+                        var oldPath = Path.Combine("wwwroot", user.ProfileImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
+                        user.ProfileImageUrl = null;
+                    }
+                }
+                else if (model.ProfileImageUrl != null)
+                {
+                    var originalFileName = Path.GetFileName(model.ProfileImageUrl.FileName);
+
+                    var filePath = Path.Combine("wwwroot", "images", originalFileName);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(originalFileName);
+                        var fileExtension = Path.GetExtension(originalFileName);
+                        var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        originalFileName = $"{fileNameWithoutExtension}_{timestamp}{fileExtension}";
+                        filePath = Path.Combine("wwwroot", "images", originalFileName);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ProfileImageUrl.CopyToAsync(stream);
+                    }
+
+                    user.ProfileImageUrl = $"/images/{originalFileName}";
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { profileImageUrl = user.ProfileImageUrl });
+            }
+            catch (Exception ex) { return HandleException(ex); }
+        }
+
         private string GenerateRandomPassword(int length)
         {
             const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";

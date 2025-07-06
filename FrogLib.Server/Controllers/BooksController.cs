@@ -96,5 +96,45 @@ namespace FrogLib.Server.Controllers
             }
             catch (Exception ex) { return HandleException(ex); }
         }
+
+        [HttpGet("all-books")]
+        public async Task<ActionResult<BookDTO>> GetAllBooksAsync()
+        {
+            try
+            {
+                var books = await _context.Books
+                    .Include(c => c.IdCategoryNavigation)
+                    .ToListAsync();
+
+                var allBooks = books.Select(book => new BookDTO
+                {
+                    Id = book.IdBook,
+                    Title = book.TitleBook,
+                    ImageURL = book.ImageUrl,
+                    AverageRating = _service.GetAverageRatingAsync(book.IdBook).Result,
+                    IdCategory = book.IdCategory,
+                    YearPublication = book.YearPublication
+                })
+                .ToList();
+
+                return Ok(allBooks);
+
+            }
+            catch (Exception ex) { return HandleException(ex); }
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<Category>> GetCategoriesAsync()
+        {
+            try
+            {
+                var categories = await _context.Categories
+                    .OrderBy(c => c.IdCategory)
+                    .ToListAsync();
+
+                return Ok(categories);
+            }
+            catch (Exception ex) { return HandleException(ex); }
+        }
     }
 }

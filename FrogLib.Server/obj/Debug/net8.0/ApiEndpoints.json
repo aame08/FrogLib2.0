@@ -109,6 +109,77 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FrogLib.Server.Controllers.AuthController",
+    "Method": "UpdateProfileAsync",
+    "RelativePath": "api/Auth/update-profile/{idUser}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "NameUser",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "LoginUser",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "OldPassword",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "NewPassword",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ConfirmPassword",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ProfileImageUrl",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "DeleteImage",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetAllBooksAsync",
+    "RelativePath": "api/Books/all-books",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "FrogLib.Server.DTOs.BookDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "FrogLib.Server.Controllers.BooksController",
     "Method": "GetBestSellingAsync",
     "RelativePath": "api/Books/best-selling",
@@ -119,6 +190,26 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.BookDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetCategoriesAsync",
+    "RelativePath": "api/Books/categories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "FrogLib.Server.Models.Category",
         "MediaTypes": [
           "text/plain",
           "application/json",

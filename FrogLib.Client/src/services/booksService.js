@@ -17,4 +17,10 @@ export default {
   getPopularBooks() {
     return apiClient.get('/popular-books').then((response) => response.data);
   },
+  getAllBooks() {
+    return apiClient.get('/all-books').then((response) => response.data);
+  },
+  getCategories() {
+    return apiClient.get('/categories').then((response) => response.data);
+  },
 };

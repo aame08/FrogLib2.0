@@ -32,4 +32,21 @@ export default {
   logout() {
     return Promise.resolve();
   },
+  updateProfile(idUser, formData) {
+    const authApiClient = axios.create({
+      baseURL: 'https://localhost:7295/api/Auth',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    authApiClient.interceptors.request.use((config) => {
+      const accessToken = store.getters['auth/accessToken'];
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    });
+
+    return authApiClient.put(`/update-profile/${idUser}`, formData);
+  },
 };

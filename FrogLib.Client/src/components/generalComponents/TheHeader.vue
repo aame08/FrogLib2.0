@@ -290,8 +290,10 @@ const logout = () => {
 
     <div class="nav-container">
       <div class="nav-links">
+        <template v-if="!isAuthenticated || userRole === 'Пользователь'">
+        </template>
         <RouterLink to="/">Главная</RouterLink>
-        <RouterLink to="/">Книги</RouterLink>
+        <RouterLink to="/books">Книги</RouterLink>
         <RouterLink to="/">Подборки</RouterLink>
         <RouterLink to="/">Рецензии</RouterLink>
       </div>
@@ -329,10 +331,9 @@ const logout = () => {
               <button class="user-menu-item" v-if="userRole === 'Пользователь'">
                 Аккаунт
               </button>
-              <!-- <button @click="router.push('/settings')" class="user-menu-item">
+              <button @click="router.push('/settings')" class="user-menu-item">
                 Настройки
-              </button> -->
-              <button class="user-menu-item">Настройки</button>
+              </button>
               <button @click="logout" class="user-menu-item logout">
                 Выйти
               </button>
