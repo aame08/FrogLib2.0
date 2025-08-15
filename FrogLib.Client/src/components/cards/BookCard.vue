@@ -8,13 +8,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="book-card">
+  <RouterLink :to="`/books/${id}`" class="book-card">
     <div class="book-rating">★ {{ averageRating.toFixed(1) }}</div>
     <div class="book-cover">
       <img :src="imageURL" :alt="title" />
     </div>
     <div style="padding: 0.5rem"></div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>

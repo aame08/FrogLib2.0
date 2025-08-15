@@ -13,4 +13,29 @@
         public int TotalUserBookmarks { get; set; }
         public int CountView { get; set; }
     }
+
+    public class BookRatingStatisticsDTO
+    {
+        public int TotalRatings { get; set; }
+        public double AverageRating { get; set; }
+        public List<RatingDistribution> RatingDistribution { get; set; }
+    }
+    public class RatingDistribution
+    {
+        public int RatingValue { get; set; }
+        public int Count { get; set; }
+        public double Percentage { get; set; }
+    }
+
+    public class BookmarksStatisticsDTO
+    {
+        public int TotalBookmarks { get; set; }
+        public List<BookmarkDistribution> BookmarkDistribution { get; set; }
+    }
+    public class BookmarkDistribution
+    {
+        public string ListType { get; set; }
+        public int Count { get; set; }
+        public double Percentage { get; set; }
+    }
 }

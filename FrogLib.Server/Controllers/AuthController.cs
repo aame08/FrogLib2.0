@@ -54,7 +54,7 @@ namespace FrogLib.Server.Controllers
                 string filePath = null;
                 if (model.ProfileImageUrl != null)
                 {
-                    var fileName = Path.GetFileName(model.ProfileImageUrl.FileName);
+                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.ProfileImageUrl.FileName)}";
                     filePath = $"/images/{fileName}";
                     var absolutePath = Path.Combine("wwwroot", "images", fileName);
                     using (var stream = new FileStream(absolutePath, FileMode.Create))
@@ -271,25 +271,21 @@ namespace FrogLib.Server.Controllers
                 }
                 else if (model.ProfileImageUrl != null)
                 {
-                    var originalFileName = Path.GetFileName(model.ProfileImageUrl.FileName);
-
-                    var filePath = Path.Combine("wwwroot", "images", originalFileName);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(originalFileName);
-                        var fileExtension = Path.GetExtension(originalFileName);
-                        var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-                        originalFileName = $"{fileNameWithoutExtension}_{timestamp}{fileExtension}";
-                        filePath = Path.Combine("wwwroot", "images", originalFileName);
-                    }
+                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.ProfileImageUrl.FileName)}";
+                    var filePath = Path.Combine("wwwroot", "images", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await model.ProfileImageUrl.CopyToAsync(stream);
                     }
 
-                    user.ProfileImageUrl = $"/images/{originalFileName}";
+                    if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+                    {
+                        var oldPath = Path.Combine("wwwroot", user.ProfileImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
+                    }
+
+                    user.ProfileImageUrl = $"/images/{fileName}";
                 }
 
                 await _context.SaveChangesAsync();

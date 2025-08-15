@@ -28,6 +28,7 @@ const prevSlide = () => {
   currentSlide.value =
     (currentSlide.value - 1 + props.books.length) % props.books.length;
 };
+console.log(props.createdDate);
 </script>
 
 <template>

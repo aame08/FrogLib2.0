@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import booksService from '@/services/booksService';
 import reviewsService from '@/services/reviewsService';
 import collectionsService from '@/services/collectionsService';
@@ -77,6 +77,12 @@ getPopularBooks();
 getPopularReviews();
 getPopularCollections();
 getStatistics();
+
+onMounted(() => {
+  getStatistics();
+
+  setInterval(getStatistics, 60000);
+});
 </script>
 
 <template>
@@ -133,7 +139,7 @@ getStatistics();
     <CollectionsSection :collections="popularCollections" />
     <section class="section">
       <div class="section-title">
-        <h2>Статистика сайта</h2>
+        <h2>✧ Статистика сайта ✧</h2>
       </div>
       <div class="forum-stats">
         <div class="stat-item">

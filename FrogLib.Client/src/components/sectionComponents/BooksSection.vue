@@ -38,7 +38,7 @@ const nextSlide = () => {
 <template>
   <section class="section">
     <div class="section-title">
-      <h2>{{ titleSection }}</h2>
+      <h2>✧ {{ titleSection }} ✧</h2>
     </div>
     <div class="books-container-wrapper">
       <button

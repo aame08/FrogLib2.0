@@ -30,7 +30,7 @@ namespace FrogLib.Server.Controllers
                     Title = r.TitleReview,
                     Content = r.TextReview,
                     Book = _service.GetBookForReviewAsync(r.IdReview).Result,
-                    Rating = _service.GetBookRatingAsync(r.IdBook, r.IdUser).Result,
+                    UserRating = _service.GetBookUserRatingAsync(r.IdBook, r.IdUser).Result,
                     PositiveRating = _service.GetRatingAsync(r.IdReview).Result.PositivePercent,
                     CountView = _service.GetCountViewAsync(r.IdReview).Result,
                     UserName = r.IdUserNavigation.NameUser,

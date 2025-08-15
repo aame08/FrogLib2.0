@@ -8,9 +8,11 @@ namespace FrogLib.Server.Services
     {
         Task<double> GetAverageRatingAsync(int idBook);
         Task<int> GetCountViewAsync(int idBook);
-        //Task<List<ReviewDTO>> GetReviewsForBookAsync(int idBook);
-        //Task<List<CollectionDTO>> GetCollectionsForBookAsync(int idBook);
         Task<string> GetAuthorsFullNameAsync(int idBook);
+        Task<BookRatingStatisticsDTO> GetRatingStatisticsAsync(int idBook);
+        Task<BookmarksStatisticsDTO> GetBookmarksStatisticsAsync(int idBook);
+        Task<List<ReviewDTO>> GetReviewsForBookAsync(int idBook);
+        Task<List<CollectionDTO>> GetCollectionsForBookAsync(int idBook);
     }
 
     public class BooksService(Froglib2Context context, IReviewsService reviewsService, ICollectionsService collectionsService) : IBooksService
@@ -38,83 +40,6 @@ namespace FrogLib.Server.Services
                 .CountAsync(v => v.TypeEntity == TypeObject && v.IdEntity == idBook);
         }
 
-        //public async Task<List<ReviewDTO>> GetReviewsForBookAsync(int idBook)
-        //{
-        //    var reviews = await _context.Reviews
-        //        .Where(r => r.IdBook == idBook && r.StatusReview == "Одобрено")
-        //        .Include(r => r.IdBookNavigation)
-        //        .Include(r => r.IdUserNavigation)
-        //        .ToListAsync();
-
-        //    var result = new List<ReviewDTO>();
-        //    foreach (var r in reviews)
-        //    {
-        //        var rating = await _reviewsService.GetRatingAsync(r.IdReview);
-        //        var countView = await _reviewsService.GetCountViewAsync(r.IdReview);
-
-        //        result.Add(new ReviewDTO
-        //        {
-        //            Id = r.IdReview,
-        //            Title = r.TitleReview,
-        //            Content = r.TextReview,
-        //            ImageURL = r.IdBookNavigation.ImageUrl,
-        //            Rating = rating.PositivePercent,
-        //            CountView = countView,
-        //            CreatedDate = r.CreatedDate,
-        //            UserName = r.IdUserNavigation.NameUser,
-        //            UserURL = r.IdUserNavigation.ProfileImageUrl
-        //        });
-        //    }
-
-        //    return result;
-        //}
-
-        //public async Task<List<CollectionDTO>> GetCollectionsForBookAsync(int idBook)
-        //{
-        //    var book = await _context.Books
-        //        .Include(b => b.IdCollections)
-        //            .ThenInclude(c => c.IdBooks)
-        //        .Include(b => b.IdCollections)
-        //            .ThenInclude(c => c.IdUserNavigation)
-        //        .FirstOrDefaultAsync(b => b.IdBook == idBook);
-
-        //    if (book == null || book.IdCollections == null) { return new List<CollectionDTO>(); }
-
-        //    var collections = new List<CollectionDTO>();
-        //    foreach (var c in book.IdCollections.Where(c => c.StatusCollection == "Одобрено"))
-        //    {
-        //        var rating = await _collectionsService.GetRatingAsync(c.IdCollection);
-        //        var countView = await _collectionsService.GetCountViewAsync(c.IdCollection);
-        //        var countComments = await _collectionsService.GetCountCommentsAsync(c.IdCollection);
-
-        //        collections.Add(new CollectionDTO
-        //        {
-        //            Id = c.IdCollection,
-        //            Title = c.TitleCollection,
-        //            Description = c.DescriptionCollection,
-        //            Rating = rating.PositivePercent,
-        //            CountBooks = c.IdBooks.Count,
-        //            Books = c.IdBooks
-        //                .Take(3)
-        //                .Select(b => new BookDTO
-        //                {
-        //                    Id = b.IdBook,
-        //                    Title = b.TitleBook,
-        //                    ImageURL = b.ImageUrl
-        //                })
-        //                .ToList(),
-        //            CountView = countView,
-        //            CountComments = countComments,
-        //            CountLiked = c.Likedcollections.Count,
-        //            CreatedDate = c.CreatedDate,
-        //            UserName = c.IdUserNavigation?.NameUser,
-        //            UserURL = c.IdUserNavigation?.ProfileImageUrl
-        //        });
-        //    }
-
-        //    return collections;
-        //}
-
         public async Task<string> GetAuthorsFullNameAsync(int idBook)
         {
             var authors = await _context.Books
@@ -124,6 +49,127 @@ namespace FrogLib.Server.Services
                 .ToListAsync();
 
             return string.Join(", ", authors);
+        }
+
+        public async Task<BookRatingStatisticsDTO> GetRatingStatisticsAsync(int idBook)
+        {
+            var book = await _context.Books
+                .Include(b => b.Bookratings)
+                .FirstOrDefaultAsync(b => b.IdBook == idBook);
+
+            var totalRating = book.Bookratings?.Count ?? 0;
+            var averageRating = await GetAverageRatingAsync(idBook);
+
+            var ratingDistribution = Enumerable.Range(1, 5)
+                .Select(ratingValue => new RatingDistribution
+                {
+                    RatingValue = ratingValue,
+                    Count = book.Bookratings?.Count(r => r.Rating == ratingValue) ?? 0,
+                    Percentage = totalRating > 0 ?
+                        (double)book.Bookratings?.Count(r => r.Rating == ratingValue) / totalRating * 100 : 0
+                })
+               .OrderByDescending(r => r.RatingValue)
+               .ToList();
+
+            return new BookRatingStatisticsDTO
+            {
+                TotalRatings = totalRating,
+                AverageRating = averageRating,
+                RatingDistribution = ratingDistribution
+            };
+        }
+
+        public async Task<BookmarksStatisticsDTO> GetBookmarksStatisticsAsync(int idBook)
+        {
+            var book = await _context.Books
+                .Include(b => b.Userbooks)
+                .FirstOrDefaultAsync(b => b.IdBook == idBook);
+
+            var totalUserBookmarks = book.Userbooks?.Count ?? 0;
+            var bookmarkDistribution = new List<string> { "Читаю", "В планах", "Брошено", "Прочитано", "Любимые" }
+                .Select(listType => new BookmarkDistribution
+                {
+                    ListType = listType,
+                    Count = book.Userbooks?.Count(ub => ub.ListType == listType) ?? 0,
+                    Percentage = totalUserBookmarks > 0 ?
+                        ((double)(book.Userbooks?.Count(ub => ub.ListType == listType) ?? 0) / totalUserBookmarks * 100) : 0
+                })
+                .ToList();
+
+            return new BookmarksStatisticsDTO
+            {
+                TotalBookmarks = totalUserBookmarks,
+                BookmarkDistribution = bookmarkDistribution
+            };
+        }
+
+        public async Task<List<ReviewDTO>> GetReviewsForBookAsync(int idBook)
+        {
+            var reviews = await _context.Reviews
+                .Where(r => r.IdBook == idBook && r.StatusReview == "Одобрено")
+                .Include(r => r.IdBookNavigation)
+                .Include(r => r.IdUserNavigation)
+                .ToListAsync();
+
+            var result = new List<ReviewDTO>();
+            foreach (var r in reviews)
+            {
+                var rating = await _reviewsService.GetRatingAsync(r.IdReview);
+                var book = await _reviewsService.GetBookForReviewAsync(r.IdReview);
+                var positiveRating = rating.PositivePercent;
+
+                result.Add(new ReviewDTO
+                {
+                    Id = r.IdReview,
+                    Title = r.TitleReview,
+                    Content = r.TextReview,
+                    Book = book,
+                    PositiveRating = positiveRating,
+                    CreatedDate = r.CreatedDate,
+                    UserName = r.IdUserNavigation.NameUser,
+                    UserURL = r.IdUserNavigation.ProfileImageUrl
+                });
+            }
+
+            return result;
+        }
+
+        public async Task<List<CollectionDTO>> GetCollectionsForBookAsync(int idBook)
+        {
+            var collections = await _context.Collections
+                .Where(c => c.IdBooks.Any(b => b.IdBook == idBook) && c.StatusCollection == "Одобрено")
+                .Include(c => c.IdBooks)
+                .Include(c => c.IdUserNavigation)
+                .ToListAsync();
+
+            var result = new List<CollectionDTO>();
+            foreach (var c in collections)
+            {
+                var rating = await _collectionsService.GetRatingAsync(c.IdCollection);
+                var countView = await _collectionsService.GetCountViewAsync(c.IdCollection);
+                var positiveRating = rating.PositivePercent;
+
+                result.Add(new CollectionDTO
+                {
+                    Id = c.IdCollection,
+                    Title = c.TitleCollection,
+                    Description = c.DescriptionCollection,
+                    PositiveRating = positiveRating,
+                    Books = c.IdBooks
+                        .Select(bc => new BookDTO
+                        {
+                            Id = bc.IdBook,
+                            Title = bc.TitleBook,
+                            ImageURL = bc.ImageUrl
+                        })
+                        .ToList(),
+                    CreatedDate = c.CreatedDate,
+                    UserName = c.IdUserNavigation?.NameUser,
+                    UserURL = c.IdUserNavigation?.ProfileImageUrl
+                });
+            }
+
+            return result;
         }
     }
 }

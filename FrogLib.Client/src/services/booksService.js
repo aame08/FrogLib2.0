@@ -23,4 +23,7 @@ export default {
   getCategories() {
     return apiClient.get('/categories').then((response) => response.data);
   },
+  getBookInfo(idBook) {
+    return apiClient.get(`/books/${idBook}`).then((response) => response.data);
+  },
 };

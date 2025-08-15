@@ -1,0 +1,85 @@
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+  type: {
+    type: String,
+    required: true,
+    validator: (value) => ['reviews', 'collections'].includes(value),
+  },
+  count: { type: Number, required: true },
+  items: { type: Array, required: true },
+  emptyMessage: { type: String, required: true },
+  buttonText: { type: String, required: true },
+  cardComponent: { type: Object, required: true },
+});
+
+const sectionTitle = computed(() => {
+  return {
+    reviews: 'рецензий',
+    collections: 'подборок',
+  }[props.type];
+});
+</script>
+
+<template>
+  <div v-if="count === 0" class="empty-state">
+    <p>{{ emptyMessage }}</p>
+    <button class="btn btn-accent" style="margin-top: 15px">
+      {{ buttonText }}
+    </button>
+  </div>
+  <div v-else class="cards-container">
+    <p class="cards-count">
+      Количество {{ sectionTitle }}: {{ count.toFixed(0) }}
+    </p>
+    <div class="cards-grid">
+      <component
+        :is="cardComponent"
+        v-for="item in items"
+        :key="item.id"
+        v-bind="item"
+      />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.empty-state {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-light);
+}
+
+.cards-count {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-accent {
+  background: var(--accent-color);
+  color: white;
+}
+
+.btn-accent:hover {
+  background: var(--hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px #0000001a;
+}
+</style>

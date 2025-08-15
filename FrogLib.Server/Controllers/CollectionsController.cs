@@ -1,7 +1,6 @@
 ﻿using FrogLib.Server.DTOs;
 using FrogLib.Server.Models;
 using FrogLib.Server.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,8 +37,7 @@ namespace FrogLib.Server.Controllers
                         Id = c.IdCollection,
                         Title = c.TitleCollection,
                         Description = c.DescriptionCollection,
-                        Rating = rating.PositivePercent,
-                        CountBooks = c.IdBooks.Count,
+                        PositiveRating = rating.PositivePercent,
                         Books = c.IdBooks
                             .Select(bc => new BookDTO
                             {
@@ -51,13 +49,14 @@ namespace FrogLib.Server.Controllers
                         CountView = countView,
                         CountComments = countComments,
                         CountLiked = c.Likedcollections.Count,
+                        CreatedDate = c.CreatedDate,
                         UserName = c.IdUserNavigation.NameUser,
                         UserURL = c.IdUserNavigation.ProfileImageUrl
                     });
                 }
 
                 var sortedCollections = popularCollections
-                        .OrderByDescending(c => c.Rating)
+                        .OrderByDescending(c => c.PositiveRating)
                             .ThenByDescending(c => c.CountComments)
                             .ThenByDescending(c => c.CountView)
                         .Take(10)

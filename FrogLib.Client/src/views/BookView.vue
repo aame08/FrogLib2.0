@@ -94,7 +94,7 @@ const goToPage = (page) => {
   <TheHeader />
   <div class="container">
     <div class="header">
-      <h1 class="page-title">Каталог книг</h1>
+      <h1 class="page-title">✧ Каталог книг ✧</h1>
       <div class="search-sort-container">
         <input
           type="text"

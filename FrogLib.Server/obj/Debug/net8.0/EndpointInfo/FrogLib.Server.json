@@ -433,6 +433,29 @@
         }
       }
     },
+    "/api/Books/books/{idBook}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "idBook",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Collections/popular-collections": {
       "get": {
         "tags": [
@@ -826,7 +849,7 @@
             "type": "string",
             "nullable": true
           },
-          "rating": {
+          "positiveRating": {
             "type": "number",
             "format": "double"
           },
@@ -1116,7 +1139,7 @@
           "book": {
             "$ref": "#/components/schemas/BookDTO"
           },
-          "rating": {
+          "userRating": {
             "type": "integer",
             "format": "int32"
           },

@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public double Rating { get; set; }
+        public double PositiveRating { get; set; }
         public int CountBooks { get; set; }
         public List<BookDTO> Books { get; set; }
         public int CountView { get; set; }

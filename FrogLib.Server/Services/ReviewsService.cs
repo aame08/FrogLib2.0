@@ -9,7 +9,7 @@ namespace FrogLib.Server.Services
         Task<RatingInfo> GetRatingAsync(int idReview);
         Task<int> GetCountViewAsync(int idReview);
         Task<int> GetCountCommentsAsync(int idReview);
-        Task<int> GetBookRatingAsync(int idBook, int idUser);
+        Task<int> GetBookUserRatingAsync(int idBook, int idUser);
         Task<BookDTO> GetBookForReviewAsync(int idReview);
         //Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview);
     }
@@ -19,7 +19,7 @@ namespace FrogLib.Server.Services
         private readonly Froglib2Context _context = context;
         private readonly Lazy<IBooksService> _booksService = booksService;
 
-        public async Task<int> GetBookRatingAsync(int idBook, int idUser)
+        public async Task<int> GetBookUserRatingAsync(int idBook, int idUser)
         {
             var rating = await _context.Bookratings
                 .FirstOrDefaultAsync(br => br.IdBook == idBook && br.IdUser == idUser);

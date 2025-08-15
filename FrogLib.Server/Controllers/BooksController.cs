@@ -21,7 +21,7 @@ namespace FrogLib.Server.Controllers
                 var books = await _context.Books.ToListAsync();
 
                 var newBooks = books
-                    .Where(book => (DateOnly.FromDateTime(DateTime.Now).DayNumber - book.AddedDate.DayNumber <= 30))
+                    .Where(book => (DateOnly.FromDateTime(DateTime.Now).DayNumber - book.AddedDate.DayNumber <= 60))
                     .Select(book => new BookDTO
                     {
                         Id = book.IdBook,
@@ -133,6 +133,57 @@ namespace FrogLib.Server.Controllers
                     .ToListAsync();
 
                 return Ok(categories);
+            }
+            catch (Exception ex) { return HandleException(ex); }
+        }
+
+        [HttpGet("books/{idBook}")]
+        public async Task<ActionResult> GetBookInfoAsync(int idBook)
+        {
+            try
+            {
+                var book = await _context.Books
+                    .Include(b => b.IdPublisherNavigation)
+                    .Include(b => b.IdCategoryNavigation)
+                    .Include(b => b.IdAuthors)
+                    .Include(b => b.Bookratings)
+                    .Include(b => b.Reviews)
+                        .ThenInclude(r => r.IdUserNavigation)
+                    .Include(b => b.IdCollections)
+                        .ThenInclude(r => r.IdUserNavigation)
+                    .Include(b => b.Userbooks)
+                    .FirstOrDefaultAsync(b => b.IdBook == idBook);
+
+                if (book == null) { return NotFound("Книга не найдена."); }
+
+                var ratingStats = await _service.GetRatingStatisticsAsync(idBook);
+                var bookmarkStats = await _service.GetBookmarksStatisticsAsync(idBook);
+                var countView = await _service.GetCountViewAsync(idBook);
+                var reviews = await _service.GetReviewsForBookAsync(idBook);
+                var collections = await _service.GetCollectionsForBookAsync(idBook);
+                var authorsFullName = await _service.GetAuthorsFullNameAsync(idBook);
+
+                return Ok(new
+                {
+                    ID = book.IdBook,
+                    ISBN13 = book.Isbn13,
+                    ImageURL = book.ImageUrl,
+                    Title = book.TitleBook,
+                    Description = book.DescriptionBook,
+                    YearPublication = book.YearPublication,
+                    PageCount = book.PageCount,
+                    LanguageBook = book.LanguageBook,
+                    Authors = authorsFullName,
+                    Category = book.IdCategoryNavigation?.NameCategoryRu,
+                    Publisher = book.IdPublisherNavigation?.NamePublisher,
+                    CountView = countView,
+                    RatingStats = ratingStats,
+                    BookmarkStats = bookmarkStats,
+                    CountReviews = reviews?.Count ?? 0,
+                    Reviews = reviews,
+                    CountCollections = collections?.Count ?? 0,
+                    Collections = collections
+                });
             }
             catch (Exception ex) { return HandleException(ex); }
         }

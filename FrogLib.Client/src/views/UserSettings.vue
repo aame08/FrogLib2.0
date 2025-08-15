@@ -133,7 +133,7 @@ watch(deleteCurrentImage, (deleted) => {
   <TheHeader />
   <div class="profile-edit-container">
     <div v-if="message" class="message">{{ message }}</div>
-    <h1 class="profile-edit-title">Редактирование профиля</h1>
+    <h1 class="profile-edit-title">✧ Редактирование профиля ✧</h1>
     <div class="profile-edit-form">
       <div class="avatar-section">
         <div class="avatar-preview">

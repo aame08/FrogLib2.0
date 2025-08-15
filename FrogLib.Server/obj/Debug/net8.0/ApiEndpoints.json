@@ -201,6 +201,22 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetBookInfoAsync",
+    "RelativePath": "api/Books/books/{idBook}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
     "Method": "GetCategoriesAsync",
     "RelativePath": "api/Books/categories",
     "HttpMethod": "GET",

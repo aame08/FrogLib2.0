@@ -36,7 +36,7 @@ const nextSlide = () => {
 <template>
   <section class="section">
     <div class="section-title">
-      <h2>Популярные рецензии</h2>
+      <h2>✧ Популярные рецензии ✧</h2>
     </div>
     <div class="reviews-container-wrapper">
       <button
