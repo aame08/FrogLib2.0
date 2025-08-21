@@ -1,6 +1,7 @@
 ﻿using FrogLib.Server.DTOs;
 using FrogLib.Server.Models;
 using FrogLib.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,19 @@ namespace FrogLib.Server.Controllers
     {
         private readonly Froglib2Context _context = context;
         private readonly IBooksService _service = service;
+
+        [Authorize(Roles = "Пользователь")]
+        [HttpGet("recommendations/{idUser}")]
+        public async Task<ActionResult<List<BookDTO>>> GetRecommendations(int idUser)
+        {
+            try
+            {
+                var recommendations = await _service.GetBookRecommendationsAsync(idUser);
+
+                return Ok(recommendations);
+            }
+            catch (Exception ex) { return HandleException(ex); }
+        }
 
         [HttpGet("new-books")]
         public async Task<ActionResult<List<BookDTO>>> GetNewBooksAsync()
@@ -162,6 +176,7 @@ namespace FrogLib.Server.Controllers
                 var reviews = await _service.GetReviewsForBookAsync(idBook);
                 var collections = await _service.GetCollectionsForBookAsync(idBook);
                 var authorsFullName = await _service.GetAuthorsFullNameAsync(idBook);
+                var similarBooks = await _service.GetSimilarBooksAsync(idBook);
 
                 return Ok(new
                 {
@@ -182,7 +197,8 @@ namespace FrogLib.Server.Controllers
                     CountReviews = reviews?.Count ?? 0,
                     Reviews = reviews,
                     CountCollections = collections?.Count ?? 0,
-                    Collections = collections
+                    Collections = collections,
+                    SimilarBooks = similarBooks
                 });
             }
             catch (Exception ex) { return HandleException(ex); }

@@ -276,6 +276,32 @@
     ]
   },
   {
+    "ContainingType": "FrogLib.Server.Controllers.BooksController",
+    "Method": "GetRecommendations",
+    "RelativePath": "api/Books/recommendations/{idUser}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FrogLib.Server.DTOs.BookDTO, FrogLib.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "FrogLib.Server.Controllers.CollectionsController",
     "Method": "GetPopularCollectionsAsync",
     "RelativePath": "api/Collections/popular-collections",
@@ -317,7 +343,33 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserActivityController",
-    "Method": "GetStatistics",
+    "Method": "AddViewAsync",
+    "RelativePath": "api/UserActivity/add-view/{idUser}/{typeEntity}/{idEntity}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "typeEntity",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "idEntity",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserActivityController",
+    "Method": "GetStatisticsAsync",
     "RelativePath": "api/UserActivity/get-statistics",
     "HttpMethod": "GET",
     "IsController": true,
@@ -326,6 +378,162 @@
     "ReturnTypes": [
       {
         "Type": "FrogLib.Server.DTOs.StatisticInfo",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "GetBookEvaluation",
+    "RelativePath": "api/UserInteractionWithBooks/book-evaluation/{idUser}/{idBook}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "DeleteBookEvalution",
+    "RelativePath": "api/UserInteractionWithBooks/delete-book-evaluation/{idUser}/{idBook}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "DeleteUserBook",
+    "RelativePath": "api/UserInteractionWithBooks/delete-user-book/{idUser}/{idBook}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "UpdateBookEvaluation",
+    "RelativePath": "api/UserInteractionWithBooks/update-book-evaluation/{idUser}/{idBook}/{evaluation}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "evaluation",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "UpdateUserBook",
+    "RelativePath": "api/UserInteractionWithBooks/update-user-book/{idUser}/{idBook}/{listType}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "listType",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
+    "Method": "GetUserBook",
+    "RelativePath": "api/UserInteractionWithBooks/user-book/{idUser}/{idBook}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idBook",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",

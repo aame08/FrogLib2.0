@@ -1,32 +1,65 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import booksService from '@/services/booksService';
+import { useStore } from 'vuex';
 import { pluralize } from '@/utils/pluralize';
+import useViewHistory from '@/composables/useViewHistory';
+import booksService from '@/services/booksService';
+import userWithBookService from '@/services/userWithBookService';
 
 import TheHeader from '@/components/generalComponents/TheHeader.vue';
 import InfoSection from '@/components/bookComponents/InfoSection.vue';
-import ReviewsSection from '@/components/bookComponents/ReviewsSection.vue';
-import CollectionsSection from '@/components/bookComponents/CollectionsSection.vue';
+import EmptySection from '@/components/bookComponents/EmptySection.vue';
+import ReviewCard from '@/components/cards/ReviewCard.vue';
+import CollectionCard from '@/components/cards/CollectionCard.vue';
+import BookCard from '@/components/cards/BookCard.vue';
 
+const { addView } = useViewHistory();
 const route = useRoute();
+const store = useStore();
 const book = ref(null);
-const userRating = ref(0);
+const currentUserRating = ref(0);
+const selectedUserRating = ref(0);
 const hoverRating = ref(null);
-const ratingSubmitted = ref(false);
 const ratingTexts = ['', 'Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
-const ratingText = computed(() => {
-  const rating = hoverRating.value || userRating.value;
-  return rating ? ratingTexts[rating] : 'Поставьте оценку';
-});
 const listTypes = ['Читаю', 'В планах', 'Брошено', 'Прочитано', 'Любимые'];
+const currentListType = ref('');
 const selectedListType = ref('');
 const activeSection = ref('book');
+const user = computed(() => store.getters['auth/user']);
+const idUser = computed(() => user.value?.idUser || null);
+const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
+
+const loadUserData = async () => {
+  if (!isAuthenticated.value || !book.value) return;
+
+  try {
+    const rating = await userWithBookService.getBookEvaluation(
+      idUser.value,
+      book.value.id
+    );
+    currentUserRating.value = rating || '';
+    selectedUserRating.value = currentUserRating.value;
+
+    const userBook = await userWithBookService.getUserBook(
+      idUser.value,
+      book.value.id
+    );
+    currentListType.value = userBook;
+    selectedListType.value = currentListType.value;
+  } catch (error) {
+    console.error('Ошибка при загрузке пользовательских данных:', error);
+  }
+};
 
 const getBookInfo = async () => {
   try {
     const response = await booksService.getBookInfo(route.params.id);
     book.value = response;
+
+    if (isAuthenticated.value) {
+      await loadUserData();
+    }
   } catch (error) {
     console.error('Ошибка при загрузке информации о книге:', error);
   }
@@ -34,12 +67,17 @@ const getBookInfo = async () => {
 getBookInfo();
 
 const setRating = (rating) => {
-  userRating.value = rating;
+  selectedUserRating.value = rating;
 };
 
 const changeSection = (section) => {
   activeSection.value = section;
 };
+
+const ratingText = computed(() => {
+  const rating = hoverRating.value || selectedUserRating.value;
+  return rating ? ratingTexts[rating] : 'Поставьте оценку';
+});
 
 const starRating = computed(() => {
   if (!book.value?.ratingStats?.averageRating) return Array(5).fill('empty');
@@ -54,6 +92,92 @@ const starRating = computed(() => {
     return 'empty';
   });
 });
+
+const submitRating = async () => {
+  try {
+    if (selectedUserRating.value > 0) {
+      await userWithBookService.updateBookEvaluation(
+        idUser.value,
+        book.value.id,
+        selectedUserRating.value
+      );
+
+      currentUserRating.value = selectedUserRating.value;
+
+      getBookInfo();
+    }
+  } catch (error) {
+    console.error('Ошибка при отправке оценки:', error);
+  }
+};
+
+const removeRating = async () => {
+  try {
+    await userWithBookService.deleteBookEvaluation(idUser.value, book.value.id);
+
+    currentUserRating.value = 0;
+    selectedUserRating.value = 0;
+  } catch (error) {
+    console.error('Ошибка при удалении оценки:', error);
+  }
+};
+
+const updateUserBook = async () => {
+  try {
+    if (selectedListType.value === 'remove') {
+      await userWithBookService.deleteUserBook(idUser.value, book.value.id);
+
+      currentListType.value = '';
+      selectedListType.value = '';
+    } else if (
+      selectedListType.value &&
+      selectedListType.value !== currentListType.value
+    ) {
+      await userWithBookService.updateUserBook(
+        idUser.value,
+        book.value.id,
+        selectedListType.value
+      );
+
+      currentListType.value = selectedListType.value;
+    }
+
+    getBookInfo();
+  } catch (error) {
+    console.error('Ошибка при обновлении списка:', error);
+  }
+};
+
+const handleView = async () => {
+  const idEntity = route.params.id ? parseInt(route.params.id) : null;
+  const typeEntity = 'Книга';
+
+  await addView(idEntity, typeEntity);
+  await getBookInfo();
+  await loadUserData();
+};
+
+onMounted(() => {
+  getBookInfo();
+  handleView();
+  loadUserData();
+});
+
+watch(
+  () => store.getters['auth/isAuthenticated'],
+  (isAuth) => {
+    if (isAuth) {
+      handleView();
+      getBookInfo();
+      loadUserData();
+    } else {
+      currentUserRating.value = 0;
+      selectedUserRating.value = 0;
+      currentListType.value = '';
+      selectedListType.value = '';
+    }
+  }
+);
 </script>
 
 <template>
@@ -71,39 +195,66 @@ const starRating = computed(() => {
                 class="rating-star"
                 v-for="star in 5"
                 :key="star"
-                :class="{ active: userRating >= star }"
+                :class="{ active: currentUserRating >= star }"
                 @click="setRating(star)"
                 @mouseover="hoverRating = star"
                 @mouseleave="hoverRating = null"
                 >{{
-                  hoverRating >= star || (!hoverRating && userRating >= star)
+                  hoverRating >= star ||
+                  (!hoverRating && selectedUserRating >= star)
                     ? '★'
                     : '☆'
                 }}</span
               >
             </div>
-            <div class="rating-value">{{ ratingText }}</div>
-            <button class="rating-submit">Отправить оценку</button>
-            <!-- <button
-                class="rating-submit"
-              >
-                Удалить оценку
-              </button> -->
+            <div class="rating-value">
+              {{ ratingText }}
+            </div>
+            <button
+              class="rating-submit"
+              :disabled="!isAuthenticated"
+              v-if="selectedUserRating !== currentUserRating"
+              @click="submitRating"
+            >
+              {{
+                currentUserRating > 0 ? 'Изменить оценку' : 'Отправить оценку'
+              }}
+            </button>
+            <button
+              v-if="currentUserRating > 0"
+              class="rating-submit"
+              @click="removeRating"
+            >
+              Удалить оценку
+            </button>
           </div>
 
           <div class="book-actions">
-            <select class="book-select">
-              <option value="">Добавить в список</option>
+            <select
+              class="book-select"
+              v-model="selectedListType"
+              @change="updateUserBook"
+            >
+              <option value="" disabled>Добавить в список</option>
               <option
+                v-if="isAuthenticated"
                 v-for="(type, index) in listTypes"
                 :key="index"
                 :value="type"
+                :selected="type === currentListType"
               >
                 {{ type }}
               </option>
+              <option v-if="currentListType" value="remove">
+                Удалить из списка
+              </option>
             </select>
-            <button class="btn btn-accent">✧ Написать рецензию</button>
-            <button class="btn btn-outline">✧ Создать подборку</button>
+            <button class="btn btn-accent" :disabled="!isAuthenticated">
+              ✧ Написать рецензию
+            </button>
+            <button class="btn btn-outline" :disabled="!isAuthenticated">
+              ✧ Создать подборку
+            </button>
           </div>
         </div>
 
@@ -165,19 +316,41 @@ const starRating = computed(() => {
             <InfoSection v-bind="book" />
           </div>
           <div v-else-if="activeSection === 'reviews'">
-            <ReviewsSection
-              :count-reviews="book.countReviews"
-              :reviews="book.reviews"
+            <EmptySection
+              type="reviews"
+              :count="book.countReviews"
+              :items="book.reviews"
+              empty-message="Пока нет рецензий на эту книгу."
+              button-text="Написать первую рецензию"
+              :card-component="ReviewCard"
             />
           </div>
           <div v-else-if="activeSection === 'collections'">
-            <CollectionsSection
-              :count-collections="book.countCollections"
-              :collections="book.collections"
+            <EmptySection
+              type="collections"
+              :count="book.countCollections"
+              :items="book.collections"
+              empty-message="Эта книга пока не добавлена в подборки."
+              button-text="Создать подборку"
+              :card-component="CollectionCard"
             />
           </div>
         </div>
       </div>
+
+      <section class="similar-books">
+        <h3 class="section-title">Похожие книги</h3>
+        <div class="books-grid">
+          <BookCard
+            v-for="(similar, index) in book.similarBooks"
+            :key="index"
+            :id="similar.id || index"
+            :title="similar.title"
+            :image-u-r-l="similar.imageURL"
+            :average-rating="similar.averageRating"
+          />
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -224,8 +397,8 @@ const starRating = computed(() => {
 }
 
 .rating-title {
-  font-weight: 600;
   margin-bottom: 10px;
+  font-weight: 600;
   color: var(--accent-color);
 }
 
@@ -238,7 +411,7 @@ const starRating = computed(() => {
 .rating-star {
   font-size: 24px;
   cursor: pointer;
-  color: #e0e0e0;
+  color: var(--light-grey);
   transition: all 0.2s;
 }
 
@@ -249,19 +422,19 @@ const starRating = computed(() => {
 }
 
 .rating-value {
+  text-align: center;
   font-size: 0.9rem;
   color: var(--text-light);
-  text-align: center;
 }
 
 .rating-submit {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
-  background: var(--accent-color);
-  color: #ffffff;
   border: none;
   border-radius: 4px;
+  color: #ffffff;
+  background: var(--accent-color);
   transition: background 0.2s;
 }
 
@@ -270,10 +443,10 @@ const starRating = computed(() => {
 }
 
 .book-actions {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 20px;
 }
 
 .book-actions select {
@@ -282,15 +455,15 @@ const starRating = computed(() => {
 
 .btn {
   padding: 8px 16px;
+  border: none;
   border-radius: 4px;
   font-weight: 500;
   transition: all 0.2s;
-  border: none;
 }
 
 .btn-accent {
+  color: #ffffff;
   background: var(--accent-color);
-  color: white;
 }
 
 .btn-accent:hover {
@@ -300,14 +473,14 @@ const starRating = computed(() => {
 }
 
 .btn-outline {
-  background-color: var(--light-bg);
   border: 1px solid var(--accent-color);
   color: var(--accent-color);
+  background-color: var(--light-bg);
 }
 
 .btn-outline:hover {
-  background: var(--hover-color);
   color: #ffffff;
+  background: var(--hover-color);
 }
 
 .book-header {
@@ -315,17 +488,17 @@ const starRating = computed(() => {
 }
 
 .book-title {
+  margin-bottom: 8px;
   font-size: 2.2rem;
   line-height: 1.2;
-  margin-bottom: 8px;
   color: var(--accent-color);
 }
 
 .book-author {
-  font-size: 1.2rem;
-  color: var(--dark-text);
-  font-style: italic;
   margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--dark-text);
 }
 
 .book-meta {
@@ -348,9 +521,9 @@ const starRating = computed(() => {
 }
 
 .star {
-  font-size: 1.2em;
   position: relative;
-  color: #d3d3d3;
+  font-size: 1.2em;
+  color: var(--light-grey);
 }
 
 .star.full {
@@ -374,18 +547,18 @@ const starRating = computed(() => {
 
 .book-tabs {
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
   margin-bottom: 30px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .tab-btn {
+  position: relative;
   padding: 12px 20px;
-  background: none;
   border: none;
   cursor: pointer;
   font-weight: 500;
   color: var(--text-light);
-  position: relative;
+  background: none;
   transition: all 0.2s;
 }
 
@@ -394,8 +567,8 @@ const starRating = computed(() => {
 }
 
 .tab-btn.active {
-  color: var(--hover-color);
   font-weight: 600;
+  color: var(--hover-color);
 }
 
 .tab-btn.active::after {
@@ -407,4 +580,39 @@ const starRating = computed(() => {
   height: 2px;
   background: var(--hover-color);
 }
+
+.section {
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 0;
+}
+
+.section-title {
+  margin-bottom: 15px;
+  margin-left: 20px;
+  padding-bottom: 8px;
+  font-size: 1.4rem;
+  display: inline-block;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.section-title::after {
+  display: none !important;
+}
+
+.similar-books {
+  margin-top: 50px;
+  padding: 30px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px #0000000d;
+  background: #ffffff;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 50px;
+  padding: 0 20px;
+}
 </style>
+

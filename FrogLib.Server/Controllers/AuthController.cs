@@ -1,6 +1,7 @@
 ﻿using FrogLib.Server.DTOs;
 using FrogLib.Server.JWTTokens;
 using FrogLib.Server.Models;
+using FrogLib.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,11 @@ namespace FrogLib.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(JwtProvider provider, Froglib2Context context) : BaseController
+    public class AuthController(JwtProvider provider, Froglib2Context context, IUsersService service) : BaseController
     {
         private readonly JwtProvider _provider = provider;
         private readonly Froglib2Context _context = context;
+        private readonly IUsersService _service = service;
 
         [HttpPost("register")]
         public ActionResult<User> Register([FromForm] UserDTO model)
@@ -205,6 +207,11 @@ namespace FrogLib.Server.Controllers
         {
             try
             {
+                if (!_service.IsAuthorizedUser(User, idUser))
+                {
+                    return Unauthorized("Несоответствие пользователя.");
+                }
+
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
                 if (user == null)
                 {

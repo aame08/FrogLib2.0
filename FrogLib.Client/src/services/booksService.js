@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '@/store';
 
 const apiClient = axios.create({
   baseURL: 'https://localhost:7295/api/Books',
@@ -8,6 +9,23 @@ const apiClient = axios.create({
 });
 
 export default {
+  getRecommendations(idUser) {
+    const authApiClient = axios.create({
+      baseURL: 'https://localhost:7295/api/Books',
+    });
+
+    authApiClient.interceptors.request.use((config) => {
+      const accessToken = store.getters['auth/accessToken'];
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    });
+
+    return authApiClient
+      .get(`/recommendations/${idUser}`)
+      .then((response) => response.data);
+  },
   getNewBooks() {
     return apiClient.get('/new-books').then((response) => response.data);
   },

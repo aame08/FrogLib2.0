@@ -13,6 +13,8 @@ namespace FrogLib.Server.Services
         Task<BookmarksStatisticsDTO> GetBookmarksStatisticsAsync(int idBook);
         Task<List<ReviewDTO>> GetReviewsForBookAsync(int idBook);
         Task<List<CollectionDTO>> GetCollectionsForBookAsync(int idBook);
+        Task<List<BookDTO>> GetBookRecommendationsAsync(int idUser);
+        Task<List<BookDTO>> GetSimilarBooksAsync(int idBook);
     }
 
     public class BooksService(Froglib2Context context, IReviewsService reviewsService, ICollectionsService collectionsService) : IBooksService
@@ -171,5 +173,84 @@ namespace FrogLib.Server.Services
 
             return result;
         }
+
+        public async Task<List<BookDTO>> GetBookRecommendationsAsync(int idUser)
+        {
+            var pythonRecommendations = await GetPythonBookRecommendationsAsync(idUser);
+
+            if (!pythonRecommendations.Any()) { return new List<BookDTO>(); }
+
+            var bookIds = pythonRecommendations
+                .Select(r => r.book_id).ToList();
+
+            var booksFromDb = await _context.Books
+                .Where(b => bookIds.Contains(b.IdBook))
+                .ToListAsync();
+
+            var result = new List<BookDTO>();
+            foreach (var book in booksFromDb)
+            {
+                result.Add(new BookDTO
+                {
+                    Id = book.IdBook,
+                    Title = book.TitleBook,
+                    ImageURL = book.ImageUrl,
+                    AverageRating = await GetAverageRatingAsync(book.IdBook)
+                });
+            }
+
+            return result.OrderBy(b => bookIds.IndexOf(b.Id)).ToList();
+        }
+
+        public async Task<List<BookDTO>> GetSimilarBooksAsync(int idBook)
+        {
+            var pythonSimilars = await GetPythonSimilarBooks(idBook);
+            if (!pythonSimilars.Any()) { return new List<BookDTO>(); }
+
+            var booksIds = pythonSimilars
+                .Select(r => r.book_id).ToList();
+
+            var booksFromDb = await _context.Books
+                .Where(b => booksIds.Contains(b.IdBook))
+                .ToListAsync();
+
+            var result = new List<BookDTO>();
+            foreach (var book in booksFromDb)
+            {
+                result.Add(new BookDTO
+                {
+                    Id = book.IdBook,
+                    Title = book.TitleBook,
+                    ImageURL = book.ImageUrl,
+                    AverageRating = await GetAverageRatingAsync(book.IdBook)
+                });
+            }
+
+            return result;
+        }
+
+        private async Task<List<PythonBook>> GetPythonBookRecommendationsAsync(int idUser)
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"http://127.0.0.1:8000/recommend/{idUser}");
+
+            if (!response.IsSuccessStatusCode)
+                return new List<PythonBook>();
+
+            return await response.Content.ReadFromJsonAsync<List<PythonBook>>();
+        }
+
+        private async Task<List<PythonBook>> GetPythonSimilarBooks(int idBook)
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"http://127.0.0.1:8000/similar_books/{idBook}?top_n=5");
+
+            if (!response.IsSuccessStatusCode)
+                return new List<PythonBook>();
+
+            return await response.Content.ReadFromJsonAsync<List<PythonBook>>();
+        }
+
+        private record PythonBook(int book_id, string title, string category);
     }
 }

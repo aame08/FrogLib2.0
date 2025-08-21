@@ -14,7 +14,6 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
         builder.Services.AddDbContext<Froglib2Context>(options =>
             options.UseMySql(
                 builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -25,6 +24,7 @@ internal class Program
         builder.Services.AddScoped<IReviewsService, ReviewsService>();
         builder.Services.AddScoped(provider =>
             new Lazy<IBooksService>(provider.GetRequiredService<IBooksService>));
+        builder.Services.AddScoped<IUsersService, UsersService>();
 
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -55,7 +55,6 @@ internal class Program
         });
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -85,7 +84,6 @@ internal class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

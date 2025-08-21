@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   type: {
@@ -20,12 +21,18 @@ const sectionTitle = computed(() => {
     collections: 'подборок',
   }[props.type];
 });
+
+const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
 </script>
 
 <template>
   <div v-if="count === 0" class="empty-state">
     <p>{{ emptyMessage }}</p>
-    <button class="btn btn-accent" style="margin-top: 15px">
+    <button
+      class="btn btn-accent"
+      style="margin-top: 15px"
+      :disabled="!isAuthenticated"
+    >
       {{ buttonText }}
     </button>
   </div>
@@ -46,8 +53,8 @@ const sectionTitle = computed(() => {
 
 <style scoped>
 .empty-state {
-  text-align: center;
   padding: 40px 0;
+  text-align: center;
   color: var(--text-light);
 }
 
@@ -66,10 +73,10 @@ const sectionTitle = computed(() => {
 
 .btn {
   padding: 8px 16px;
+  border: none;
   border-radius: 4px;
   font-weight: 500;
   transition: all 0.2s;
-  border: none;
 }
 
 .btn-accent {

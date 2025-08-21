@@ -86,6 +86,7 @@ const actions = {
     console.log('Пользователь вышел из системы.');
     commit('clearAuth');
     commit('stopActivityTracker');
+    commit('viewHistory/CLEAR_PENDING_VIEWS', null, { root: true });
   },
 };
 

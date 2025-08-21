@@ -18,7 +18,6 @@ const isClosing = ref(false);
 const message = ref('');
 const errors = ref({});
 const showUserMenu = ref(false);
-// const user = computed(() => store.state.auth.user);
 
 const store = useStore();
 const route = useRoute();
@@ -291,11 +290,11 @@ const logout = () => {
     <div class="nav-container">
       <div class="nav-links">
         <template v-if="!isAuthenticated || userRole === 'Пользователь'">
+          <RouterLink to="/">Главная</RouterLink>
+          <RouterLink to="/books">Книги</RouterLink>
+          <RouterLink to="/">Подборки</RouterLink>
+          <RouterLink to="/">Рецензии</RouterLink>
         </template>
-        <RouterLink to="/">Главная</RouterLink>
-        <RouterLink to="/books">Книги</RouterLink>
-        <RouterLink to="/">Подборки</RouterLink>
-        <RouterLink to="/">Рецензии</RouterLink>
       </div>
     </div>
 
@@ -647,7 +646,7 @@ const logout = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #00000080;
+  background-color: var(--black);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -686,7 +685,7 @@ const logout = () => {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #666666;
+  color: var(--text-light);
   transition: transform 0.2s ease;
 }
 
@@ -843,7 +842,7 @@ const logout = () => {
 }
 
 .user-menu-item.logout {
-  color: #dc143c;
+  color: var(--red);
 }
 
 .fade-enter-active,

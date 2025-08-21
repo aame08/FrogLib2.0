@@ -6,9 +6,11 @@ import BookCard from '../cards/BookCard.vue';
 const props = defineProps({
   titleSection: { type: String, required: true },
   books: { type: Array, required: true },
+  isRecommended: { type: Boolean, default: false },
 });
 
 const currentIndex = ref(0);
+const showTooltip = ref(false);
 
 const visibleBooks = computed(() => {
   return props.books.slice(currentIndex.value, currentIndex.value + 5);
@@ -38,7 +40,52 @@ const nextSlide = () => {
 <template>
   <section class="section">
     <div class="section-title">
-      <h2>✧ {{ titleSection }} ✧</h2>
+      <h2>
+        ✧ {{ titleSection }} ✧
+        <button
+          v-if="isRecommended"
+          class="recommendation-info-button"
+          @mouseenter="showTooltip = true"
+          @mouseleave="showTooltip = false"
+          @focus="showTooltip = true"
+          @blur="showTooltip = false"
+        >
+          ⓘ
+        </button>
+      </h2>
+
+      <div v-if="showTooltip && isRecommended" class="recommendation-tooltip">
+        <h3>Персональные рекомендации</h3>
+        <p>
+          Эту подборку сделал для вас искусственный интеллект по имени Frog-Ai.
+          Его создали и обучили наши программисты и специалисты по работе с
+          данными.
+        </p>
+
+        <h4>Как это работает</h4>
+        <p>В основе работы Frog-Ai лежит гибридная система рекомендаций:</p>
+        <ul>
+          <li>
+            <strong>Контентная фильтрация:</strong> Анализирует содержание книг,
+            которые вам нравятся, и ищет похожие
+          </li>
+          <li>
+            <strong>Коллаборативная фильтрация:</strong> Сравнивает ваши
+            предпочтения с другими читателями
+          </li>
+        </ul>
+
+        <h4>Как улучшить рекомендации</h4>
+        <ul>
+          <li>Оценивайте прочитанные книги</li>
+          <li>Добавляйте книги в свои коллекции</li>
+          <li>Отмечайте статусы чтения ("Читаю", "Прочитано" и другие)</li>
+        </ul>
+        <p>
+          Система обновляет рекомендации ежедневно, поэтому заглядывайте сюда
+          почаще!
+        </p>
+      </div>
     </div>
     <div class="books-container-wrapper">
       <button
@@ -72,6 +119,65 @@ const nextSlide = () => {
 </template>
 
 <style scoped>
+.recommendation-info-button {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: help;
+  transition: all 0.2s;
+}
+
+.recommendation-info-button:hover {
+  color: var(--hover-color);
+}
+
+.recommendation-tooltip {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  z-index: 100;
+  width: 550px;
+  height: fit-content;
+  padding: 1.5rem;
+  text-align: left;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px #0000001a;
+}
+
+.recommendation-tooltip h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+}
+
+.recommendation-tooltip h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.recommendation-tooltip p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.recommendation-tooltip ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.recommendation-tooltip li {
+  margin-bottom: 0.3rem;
+}
+
 .books-container-wrapper {
   position: relative;
   display: flex;

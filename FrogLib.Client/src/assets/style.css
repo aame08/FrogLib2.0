@@ -6,6 +6,11 @@
   --light-bg: #f5f5f5;
   --dark-text: #333333;
   --text-light: #666666;
+  --grey: #888888;
+  --light-grey: #d3d3d3;
+  --red: #dc143c;
+  --dark-red: #8b0000;
+  --black: #00000080;
 }
 
 .pink-theme {
@@ -36,7 +41,7 @@ h4 {
 
 a {
   text-decoration: none;
-  color: #d3d3d3;
+  color: var(--light-grey);
 }
 
 button,
@@ -45,7 +50,7 @@ a {
 }
 
 button:disabled {
-  color: #d3d3d3;
+  color: var(--light-grey);
   cursor: not-allowed;
 }
 
@@ -80,7 +85,6 @@ li::marker {
 }
 
 select {
-  /* height: 30px; */
   border-color: var(--accent-color);
   border-radius: 5px;
 }
@@ -179,15 +183,15 @@ legend {
 }
 
 .error-message {
-  color: #dc143c;
+  color: var(--red);
   font-size: 12px;
 }
 
 .input-error {
-  border-color: #8b0000 !important;
+  border-color: var(--dark-red) !important;
 }
 
 .message {
-  color: #808080;
+  color: var(--grey);
   text-align: center;
 }

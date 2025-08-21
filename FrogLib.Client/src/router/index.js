@@ -56,34 +56,4 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-// router.beforeEach(async (to, from) => {
-//   if (!to.meta.trackView) {
-//     return;
-//   }
-
-//   const isAuthenticated = store.getters['auth/isAuthenticated'];
-//   const user = store.getters['auth/user'];
-
-//   if (!isAuthenticated || !user?.idUser) {
-//     console.warn('Пользователь не авторизован или данные отсутствуют.');
-//     return;
-//   }
-
-//   const idUser = user.idUser;
-//   const idEntity = to.params.id ? parseInt(to.params.id) : null;
-//   const typeEntity = to.meta.entityType || null;
-
-//   if (!idEntity || !typeEntity) {
-//     console.log('Нет данных для добавления просмотра.');
-//     return;
-//   }
-
-//   try {
-//     await userActivityService.addView(idUser, idEntity, typeEntity);
-//     console.log('Просмотр добавлен успешно.');
-//   } catch (error) {
-//     console.error('Ошибка при добавлении просмотра:', error);
-//   }
-// });
-
 export default router;

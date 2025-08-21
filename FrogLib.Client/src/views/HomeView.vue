@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { useStore } from 'vuex';
 import booksService from '@/services/booksService';
 import reviewsService from '@/services/reviewsService';
 import collectionsService from '@/services/collectionsService';
@@ -10,12 +11,30 @@ import BooksSection from '@/components/sectionComponents/BooksSection.vue';
 import ReviewsSection from '@/components/sectionComponents/ReviewsSection.vue';
 import CollectionsSection from '@/components/sectionComponents/CollectionsSection.vue';
 
+const store = useStore();
+const user = computed(() => store.getters['auth/user']);
+const idUser = computed(() => user.value?.idUser || null);
+const recommendBooks = ref([]);
 const newBooks = ref([]);
 const bestsellers = ref([]);
 const popularBooks = ref([]);
 const popularReviews = ref([]);
 const popularCollections = ref([]);
 const statistics = ref(null);
+const lastUpdateTime = ref(false);
+const updateInterval = 30 * 60 * 1000;
+
+const getRecommendations = async () => {
+  if (!idUser.value) return;
+
+  try {
+    const response = await booksService.getRecommendations(idUser.value);
+    recommendBooks.value = response;
+    lastUpdateTime.value = new Date();
+  } catch (error) {
+    console.error('Ошибка при получении рекомендаций:', error);
+  }
+};
 
 const getNewBooks = async () => {
   try {
@@ -83,6 +102,32 @@ onMounted(() => {
 
   setInterval(getStatistics, 60000);
 });
+
+let updateTimer = null;
+
+onMounted(() => {
+  getRecommendations();
+  updateTimer = setInterval(getRecommendations, updateInterval);
+});
+
+onUnmounted(() => {
+  if (updateTimer) clearInterval(updateTimer);
+});
+
+watch(
+  idUser,
+  (newId) => {
+    if (newId) {
+      getRecommendations();
+      if (updateTimer) clearInterval(updateTimer);
+      updateTimer = setInterval(getRecommendations, updateInterval);
+    } else {
+      recommendBooks.value = [];
+      if (updateTimer) clearInterval(updateTimer);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -128,6 +173,12 @@ onMounted(() => {
   </section>
 
   <div class="container">
+    <BooksSection
+      v-if="recommendBooks.length > 0"
+      title-section="Персональные рекомендации"
+      :books="recommendBooks"
+      :is-recommended="true"
+    />
     <BooksSection
       v-if="newBooks.length > 0"
       title-section="Книжные новинки"
@@ -214,7 +265,7 @@ onMounted(() => {
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px #0000001a;
   transition: transform 0.3s;
 }
 
@@ -238,7 +289,7 @@ onMounted(() => {
 
 .features-card p {
   font-size: 0.95rem;
-  color: #666;
+  color: var(--text-light);
 }
 
 .container {
@@ -265,6 +316,6 @@ onMounted(() => {
 }
 
 .stat-item p {
-  color: #666666;
+  color: var(--text-light);
 }
 </style>

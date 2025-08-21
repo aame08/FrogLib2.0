@@ -297,7 +297,7 @@ watch(deleteCurrentImage, (deleted) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #999999;
+  color: var(--grey);
 }
 
 .avatar-controls {
@@ -321,8 +321,8 @@ watch(deleteCurrentImage, (deleted) => {
 
 .delete-button {
   background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  color: #dc143c;
+  border: 1px solid var(--light-grey);
+  color: var(--red);
 }
 
 .form-group {

@@ -104,7 +104,7 @@ const truncatedDescription = computed(() => {
 .book-author {
   margin: 0 0 10px;
   font-size: 0.9rem;
-  color: #666666;
+  color: var(--text-light);
 }
 
 .review-rating {
@@ -166,6 +166,6 @@ const truncatedDescription = computed(() => {
 
 .review-date {
   font-size: 0.8rem;
-  color: #888888;
+  color: var(--grey);
 }
 </style>

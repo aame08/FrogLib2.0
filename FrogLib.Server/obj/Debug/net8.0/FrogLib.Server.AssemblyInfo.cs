@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrogLib.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c024d7f82ca7d8c4b65e89e6390e2b41a7ae6ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7a479f2ac7531012a431d378e0982103ba68b73")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrogLib.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrogLib.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

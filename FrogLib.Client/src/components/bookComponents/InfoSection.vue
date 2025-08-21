@@ -109,16 +109,16 @@ const props = defineProps({
 <style scoped>
 .section {
   margin: 0;
-  padding: 0;
   margin-bottom: 30px;
+  padding: 0;
 }
 
 .section-title {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--accent-color);
   display: inline-block;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .section-title::after {
@@ -137,17 +137,17 @@ const props = defineProps({
 }
 
 .detail-item {
+  padding: 12px;
   font-size: 0.95rem;
   background: #ffffff;
-  padding: 12px;
   border-radius: 4px;
   box-shadow: 0 4px 12px #0000000d;
 }
 
 .detail-label {
-  color: var(--text-light);
   margin-bottom: 4px;
   font-size: 0.9rem;
+  color: var(--text-light);
 }
 
 .stats-container {
@@ -158,11 +158,11 @@ const props = defineProps({
 }
 
 .stat-card {
-  background: #ffffff;
   padding: 20px;
+  background: #ffffff;
   border-radius: 6px;
-  box-shadow: 0 4px 12px #0000000d;
   border-top: 3px solid var(--accent-color);
+  box-shadow: 0 4px 12px #0000000d;
 }
 
 .stat-header {
@@ -184,9 +184,9 @@ const props = defineProps({
 
 .stat-bar {
   height: 8px;
+  margin: 8px 0;
   background: #f0f0f0;
   border-radius: 4px;
-  margin: 8px 0;
   overflow: hidden;
 }
 
@@ -209,15 +209,15 @@ const props = defineProps({
 
 .stat-percent {
   width: 50px;
+  font-size: 0.9rem;
   text-align: right;
   color: var(--text-light);
-  font-size: 0.9rem;
 }
 
 .stat-count {
   width: 40px;
+  font-size: 0.9rem;
   text-align: right;
   color: var(--dark-text);
-  font-size: 0.9rem;
 }
 </style>

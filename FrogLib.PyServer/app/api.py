@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 import numpy as np
 import pandas as pd
-import app.core as core  # обращаемся к глобальным переменным через модуль
+import app.core as core
 
 router = APIRouter()
 

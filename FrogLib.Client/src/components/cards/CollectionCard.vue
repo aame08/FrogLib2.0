@@ -28,7 +28,6 @@ const prevSlide = () => {
   currentSlide.value =
     (currentSlide.value - 1 + props.books.length) % props.books.length;
 };
-console.log(props.createdDate);
 </script>
 
 <template>
@@ -235,6 +234,6 @@ console.log(props.createdDate);
 
 .collection-date {
   font-size: 0.8rem;
-  color: #888888;
+  color: var(--grey);
 }
 </style>
