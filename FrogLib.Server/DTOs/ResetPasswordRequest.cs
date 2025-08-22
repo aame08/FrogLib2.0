@@ -2,8 +2,8 @@
 {
     public class ResetPasswordRequest
     {
-        public string SenderEmail { get; set; }
-        public string SenderPassword { get; set; }
+        //public string SenderEmail { get; set; }
+        //public string SenderPassword { get; set; }
         public string UserEmail { get; set; }
     }
 }

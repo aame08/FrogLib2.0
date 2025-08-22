@@ -21,8 +21,6 @@ export default {
   },
   resetPassword(userEmail) {
     return apiClient.post('/reset-password', {
-      senderEmail: 'vika.korsakova.2016@gmail.com',
-      senderPassword: '2412vn2412',
       userEmail: userEmail,
     });
   },

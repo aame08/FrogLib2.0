@@ -127,8 +127,13 @@ namespace FrogLib.Server.Controllers
         {
             try
             {
-                const string senderEmail = "vika.korsakova.2016@gmail.com";
-                const string senderPassword = "ueyh ozln ivld kxbt";
+                var configuration = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+
+                string senderEmail = Environment.GetEnvironmentVariable("SENDER_EMAIL")
+                    ?? configuration["EmailSettings:SenderEmail"];
+
+                string senderPassword = Environment.GetEnvironmentVariable("SENDER_PASSWORD")
+                    ?? configuration["EmailSettings:SenderPassword"];
 
                 var user = _context.Users
                     .FirstOrDefault(u => u.LoginUser == request.UserEmail);

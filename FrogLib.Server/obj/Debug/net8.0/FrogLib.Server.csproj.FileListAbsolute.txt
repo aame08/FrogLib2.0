@@ -124,3 +124,5 @@ C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\FrogLib.S
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\ref\FrogLib.Server.dll
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\bin\Debug\net8.0\FrogLib.Server.staticwebassets.runtime.json
 C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\obj\Debug\net8.0\FrogLib.Server.sourcelink.json
+C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\vikak\source\repos\FrogLib2.0\FrogLib.Server\bin\Debug\net8.0\Sprache.dll

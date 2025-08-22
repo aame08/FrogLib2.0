@@ -7,12 +7,17 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using DotNetEnv;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        Env.Load();
+
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.Services.AddDbContext<Froglib2Context>(options =>
             options.UseMySql(

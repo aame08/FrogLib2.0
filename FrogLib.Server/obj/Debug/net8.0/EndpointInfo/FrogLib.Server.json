@@ -1401,14 +1401,6 @@
       "ResetPasswordRequest": {
         "type": "object",
         "properties": {
-          "senderEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "senderPassword": {
-            "type": "string",
-            "nullable": true
-          },
           "userEmail": {
             "type": "string",
             "nullable": true
