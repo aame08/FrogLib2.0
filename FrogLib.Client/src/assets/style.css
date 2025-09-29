@@ -3,6 +3,7 @@
 :root {
   --accent-color: #228b22;
   --hover-color: #006400;
+  --bg: #ffffff;
   --light-bg: #f5f5f5;
   --dark-text: #333333;
   --text-light: #666666;
@@ -11,6 +12,8 @@
   --red: #dc143c;
   --dark-red: #8b0000;
   --black: #00000080;
+  --shadow: 0 4px 12px #0000000d;
+  --shadow-hover: 0 6px 16px #0000001a;
 }
 
 .pink-theme {
@@ -21,7 +24,7 @@
 
 * {
   font-family: 'Roboto', sans-serif;
-  font-weight: 400;
+  /* font-weight: 400; */
   line-height: 1.6;
   color: var(--dark-text);
 }
@@ -130,6 +133,36 @@ legend {
   color: var(--hover-color);
 }
 
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-accent {
+  color: #ffffff;
+  background: var(--accent-color);
+}
+
+.btn-accent:hover {
+  background: var(--hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px #0000001a;
+}
+
+.btn-outline {
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  background-color: var(--light-bg);
+}
+
+.btn-outline:hover {
+  color: #ffffff;
+  background: var(--hover-color);
+}
+
 .section {
   padding: 3rem 0;
 }
@@ -194,4 +227,8 @@ legend {
 .message {
   color: var(--grey);
   text-align: center;
+}
+
+.forbidden-word {
+  color: var(--red);
 }

@@ -300,7 +300,7 @@ const goToPage = (page) => {
   padding: 8px 15px;
   border: 1px solid var(--accent-color);
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: var(--bg);
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -308,12 +308,12 @@ const goToPage = (page) => {
 .pagination button:hover {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
-  color: #ffffff;
+  color: var(--bg);
 }
 
 .pagination button.active {
   background-color: var(--accent-color);
-  color: #ffffff;
+  color: var(--bg);
   border-color: var(--accent-color);
 }
 </style>

@@ -895,6 +895,68 @@
           }
         }
       }
+    },
+    "/api/UserInteractionWithEntities/add-review": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/add-collection": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1226,6 +1288,36 @@
         },
         "additionalProperties": false
       },
+      "CollectionRequest": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "titleCollection": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionCollection": {
+            "type": "string",
+            "nullable": true
+          },
+          "plaintDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "idBooks": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Comment": {
         "type": "object",
         "properties": {
@@ -1487,6 +1579,32 @@
             "nullable": true
           },
           "userURL": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReviewRequest": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idBook": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "titleReview": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentReview": {
+            "type": "string",
+            "nullable": true
+          },
+          "plaintText": {
             "type": "string",
             "nullable": true
           }

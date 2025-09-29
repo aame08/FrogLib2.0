@@ -13,6 +13,8 @@ import EmptySection from '@/components/bookComponents/EmptySection.vue';
 import ReviewCard from '@/components/cards/ReviewCard.vue';
 import CollectionCard from '@/components/cards/CollectionCard.vue';
 import BookCard from '@/components/cards/BookCard.vue';
+import ReviewForm from '@/components/generalComponents/ReviewForm.vue';
+import CollectionForm from '@/components/generalComponents/CollectionForm.vue';
 
 const { addView } = useViewHistory();
 const route = useRoute();
@@ -26,6 +28,8 @@ const listTypes = ['Читаю', 'В планах', 'Брошено', 'Проч�
 const currentListType = ref('');
 const selectedListType = ref('');
 const activeSection = ref('book');
+const isReviewFormVisible = ref(false);
+const isCollectionFormVisible = ref(false);
 const user = computed(() => store.getters['auth/user']);
 const idUser = computed(() => user.value?.idUser || null);
 const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
@@ -157,6 +161,22 @@ const handleView = async () => {
   await loadUserData();
 };
 
+const openForm = (formName) => {
+  if (formName === 'review') {
+    isReviewFormVisible.value = true;
+  } else if (formName === 'collection') {
+    isCollectionFormVisible.value = true;
+  }
+};
+
+const closeForm = (formName) => {
+  if (formName === 'review') {
+    isReviewFormVisible.value = false;
+  } else if (formName === 'collection') {
+    isCollectionFormVisible.value = false;
+  }
+};
+
 onMounted(() => {
   getBookInfo();
   handleView();
@@ -183,7 +203,10 @@ watch(
 <template>
   <TheHeader />
   <div class="book-page">
-    <div class="container">
+    <div
+      class="container"
+      v-if="!isReviewFormVisible && !isCollectionFormVisible"
+    >
       <div class="book-layout">
         <div class="book-cover-container">
           <img :src="book.imageURL" :alt="book.title" class="book-cover" />
@@ -216,6 +239,7 @@ watch(
               v-if="selectedUserRating !== currentUserRating"
               @click="submitRating"
             >
+              ✧
               {{
                 currentUserRating > 0 ? 'Изменить оценку' : 'Отправить оценку'
               }}
@@ -225,7 +249,7 @@ watch(
               class="rating-submit"
               @click="removeRating"
             >
-              Удалить оценку
+              ✧ Удалить оценку
             </button>
           </div>
 
@@ -249,10 +273,18 @@ watch(
                 Удалить из списка
               </option>
             </select>
-            <button class="btn btn-accent" :disabled="!isAuthenticated">
+            <button
+              class="btn btn-accent"
+              :disabled="!isAuthenticated"
+              @click="openForm('review')"
+            >
               ✧ Написать рецензию
             </button>
-            <button class="btn btn-outline" :disabled="!isAuthenticated">
+            <button
+              class="btn btn-outline"
+              :disabled="!isAuthenticated"
+              @click="openForm('collection')"
+            >
               ✧ Создать подборку
             </button>
           </div>
@@ -323,6 +355,7 @@ watch(
               empty-message="Пока нет рецензий на эту книгу."
               button-text="Написать первую рецензию"
               :card-component="ReviewCard"
+              @open-form="openForm"
             />
           </div>
           <div v-else-if="activeSection === 'collections'">
@@ -333,6 +366,7 @@ watch(
               empty-message="Эта книга пока не добавлена в подборки."
               button-text="Создать подборку"
               :card-component="CollectionCard"
+              @open-form="openForm"
             />
           </div>
         </div>
@@ -352,6 +386,20 @@ watch(
         </div>
       </section>
     </div>
+    <ReviewForm
+      v-if="isReviewFormVisible"
+      :book="book"
+      :user-rating="currentUserRating"
+      :id-user="idUser"
+      @close="() => closeForm('review')"
+      @refresh-data="getBookInfo"
+    />
+    <CollectionForm
+      v-if="isCollectionFormVisible"
+      :book="book"
+      :id-user="idUser"
+      @close="() => closeForm('collection')"
+    />
   </div>
 </template>
 
@@ -380,7 +428,7 @@ watch(
   width: 100%;
   height: auto;
   border-radius: 4px;
-  box-shadow: 0 4px 12px #0000000d;
+  box-shadow: var(--shadow);
   transition: transform 0.3s;
 }
 
@@ -392,7 +440,7 @@ watch(
   margin-top: 15px;
   padding: 15px;
   border-radius: 4px;
-  box-shadow: 0 4px 12px #0000000d;
+  box-shadow: var(--shadow);
   background: var(--light-bg);
 }
 
@@ -433,7 +481,7 @@ watch(
   margin-top: 10px;
   border: none;
   border-radius: 4px;
-  color: #ffffff;
+  color: var(--bg);
   background: var(--accent-color);
   transition: background 0.2s;
 }
@@ -451,36 +499,6 @@ watch(
 
 .book-actions select {
   padding: 8px 12px;
-}
-
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-accent {
-  color: #ffffff;
-  background: var(--accent-color);
-}
-
-.btn-accent:hover {
-  background: var(--hover-color);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px #0000001a;
-}
-
-.btn-outline {
-  border: 1px solid var(--accent-color);
-  color: var(--accent-color);
-  background-color: var(--light-bg);
-}
-
-.btn-outline:hover {
-  color: #ffffff;
-  background: var(--hover-color);
 }
 
 .book-header {
@@ -604,8 +622,8 @@ watch(
   margin-top: 50px;
   padding: 30px 0;
   border-radius: 8px;
-  box-shadow: 0 4px 12px #0000000d;
-  background: #ffffff;
+  box-shadow: var(--shadow);
+  background: var(--bg);
 }
 
 .books-grid {
@@ -615,4 +633,3 @@ watch(
   padding: 0 20px;
 }
 </style>
-

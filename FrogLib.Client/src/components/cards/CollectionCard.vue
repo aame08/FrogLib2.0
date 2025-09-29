@@ -88,7 +88,7 @@ const prevSlide = () => {
   gap: 16px;
   max-width: 400px;
   padding: 20px;
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 12px;
   box-shadow: 0 4px 12px #0000001a;
   transition: transform 0.3s;
@@ -163,7 +163,7 @@ const prevSlide = () => {
 }
 
 .carousel-button:hover {
-  background: #ffffff;
+  background: var(--bg);
 }
 
 .collection-indicators {

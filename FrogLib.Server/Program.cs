@@ -1,4 +1,5 @@
-﻿using FrogLib.Server.JWTTokens;
+﻿using DotNetEnv;
+using FrogLib.Server.JWTTokens;
 using FrogLib.Server.Models;
 using FrogLib.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using DotNetEnv;
 
 internal class Program
 {
@@ -30,6 +30,8 @@ internal class Program
         builder.Services.AddScoped(provider =>
             new Lazy<IBooksService>(provider.GetRequiredService<IBooksService>));
         builder.Services.AddScoped<IUsersService, UsersService>();
+        builder.Services.AddHttpClient();
+        builder.Services.AddScoped<ITextModerationService, TextModerationService>();
 
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -542,5 +542,37 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "AddCollectionAsync",
+    "RelativePath": "api/UserInteractionWithEntities/add-collection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "FrogLib.Server.DTOs.CollectionRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "AddReviewAsync",
+    "RelativePath": "api/UserInteractionWithEntities/add-review",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "FrogLib.Server.DTOs.ReviewRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.10.0",
     "dayjs": "^1.11.13",
     "dotenv": "^17.2.1",

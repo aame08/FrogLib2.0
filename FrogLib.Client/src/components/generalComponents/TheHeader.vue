@@ -567,7 +567,7 @@ const logout = () => {
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  background-color: #ffffff;
+  background-color: var(--bg);
   box-shadow: 0 2px 5px #0000001a;
 }
 
@@ -654,7 +654,7 @@ const logout = () => {
 }
 
 .modal {
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 8px;
   width: 100%;
   max-width: 550px;
@@ -726,7 +726,7 @@ const logout = () => {
   width: 100%;
   padding: 12px;
   background-color: var(--accent-color);
-  color: #ffffff;
+  color: var(--bg);
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -823,7 +823,7 @@ const logout = () => {
   min-width: 150px;
   z-index: 100;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 8px;
   box-shadow: 0 2px 10px #0000001a;
 }

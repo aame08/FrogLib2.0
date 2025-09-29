@@ -21,7 +21,7 @@ const props = defineProps({
 .book-card {
   flex: 0 0 calc(20% - 1.2rem);
   min-width: 180px;
-  background-color: #ffffff;
+  background-color: var(--bg);
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 2px 5px #0000001a;

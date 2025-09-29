@@ -1,6 +1,8 @@
-from fastapi import APIRouter
 import numpy as np
 import pandas as pd
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+
 import app.core as core
 
 router = APIRouter()
@@ -127,3 +129,43 @@ async def similar_books(book_id: int, top_n: int = 5):
     except Exception as e:
         print(f"[ERROR] Ошибка в similar_books: {e}")
         return [{"book_id": 0, "title": "Ошибка генерации похожих книг", "category": "-", "language": "-"}]
+
+
+class TextRequest(BaseModel):
+    text: str
+
+
+@router.post("/check_text")
+async def check_text(request: TextRequest):
+    try:
+        if core.forbidden_words_list is None:
+            raise HTTPException(status_code=503, detail="Список запрещенных слов не загружен")
+
+        if not request.text or not isinstance(request.text, str):
+            raise HTTPException(status_code=400, detail="Текст обязателен и должен быть строкой")
+
+        result = core.check_text_for_forbidden_words(request.text, core.forbidden_words_list)
+
+        print(f"[DEBUG] request.text = {request.text}")
+        print(f"[DEBUG] forbidden_words_list = {core.forbidden_words_list}")
+
+        return {
+            "has_forbidden": result["has_forbidden"],
+        }
+
+    except Exception as e:
+        print(f"[ERROR] Ошибка при проверке текста: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка при проверке текста")
+
+
+@router.post("/highlight_text")
+async def highlight_text(request: TextRequest):
+    if core.forbidden_words_list is None:
+        raise HTTPException(status_code=503, detail="Список запрещенных слов не загружен")
+
+    highlighted = core.highlight_forbidden_words(request.text, core.forbidden_words_list)
+
+    return {
+        "original": request.text,
+        "highlighted": highlighted
+    }

@@ -15,6 +15,10 @@ const props = defineProps({
   cardComponent: { type: Object, required: true },
 });
 
+const emit = defineEmits(['open-form']);
+
+const store = useStore();
+
 const sectionTitle = computed(() => {
   return {
     reviews: 'рецензий',
@@ -23,6 +27,14 @@ const sectionTitle = computed(() => {
 });
 
 const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
+
+const handleButtonClick = () => {
+  if (props.type === 'reviews') {
+    emit('open-form', 'review');
+  } else if (props.type === 'collections') {
+    emit('open-form', 'collection');
+  }
+};
 </script>
 
 <template>
@@ -32,8 +44,9 @@ const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
       class="btn btn-accent"
       style="margin-top: 15px"
       :disabled="!isAuthenticated"
+      @click="handleButtonClick"
     >
-      {{ buttonText }}
+      ✧ {{ buttonText }}
     </button>
   </div>
   <div v-else class="cards-container">
@@ -57,36 +70,15 @@ const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
   text-align: center;
   color: var(--text-light);
 }
-
 .cards-count {
   margin-bottom: 20px;
   font-size: 1.1rem;
   color: var(--text-light);
 }
-
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 24px;
   width: 100%;
-}
-
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-accent {
-  background: var(--accent-color);
-  color: white;
-}
-
-.btn-accent:hover {
-  background: var(--hover-color);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px #0000001a;
 }
 </style>

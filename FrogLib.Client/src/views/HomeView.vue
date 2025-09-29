@@ -231,7 +231,7 @@ watch(
   font-style: italic;
   line-height: 1.4;
   margin-bottom: 1.5rem;
-  color: #ffffff;
+  color: var(--bg);
 }
 
 .quote-image img {
@@ -263,7 +263,7 @@ watch(
 .features-card {
   width: 280px;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: var(--bg);
   border-radius: 8px;
   box-shadow: 0 3px 10px #0000001a;
   transition: transform 0.3s;

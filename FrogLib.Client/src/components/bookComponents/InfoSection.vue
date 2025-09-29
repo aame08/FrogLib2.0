@@ -139,9 +139,9 @@ const props = defineProps({
 .detail-item {
   padding: 12px;
   font-size: 0.95rem;
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 4px;
-  box-shadow: 0 4px 12px #0000000d;
+  box-shadow: var(--shadow);
 }
 
 .detail-label {
@@ -159,10 +159,10 @@ const props = defineProps({
 
 .stat-card {
   padding: 20px;
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 6px;
   border-top: 3px solid var(--accent-color);
-  box-shadow: 0 4px 12px #0000000d;
+  box-shadow: var(--shadow);
 }
 
 .stat-header {

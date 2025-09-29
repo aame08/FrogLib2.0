@@ -252,7 +252,7 @@ watch(deleteCurrentImage, (deleted) => {
   max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: var(--bg);
 }
 
 .profile-edit-title {
@@ -315,7 +315,7 @@ watch(deleteCurrentImage, (deleted) => {
 
 .upload-button {
   background-color: var(--accent-color);
-  color: #ffffff;
+  color: var(--bg);
   border: none;
 }
 
@@ -357,7 +357,7 @@ watch(deleteCurrentImage, (deleted) => {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   background-color: var(--accent-color);
-  color: #ffffff;
+  color: var(--bg);
   border: none;
   border-radius: 4px;
 }

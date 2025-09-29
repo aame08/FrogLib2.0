@@ -117,19 +117,28 @@ namespace FrogLib.Server.Controllers
             try
             {
                 var books = await _context.Books
+                    .Include(a => a.IdAuthors)
                     .Include(c => c.IdCategoryNavigation)
                     .ToListAsync();
 
-                var allBooks = books.Select(book => new BookDTO
+                var allBooks = new List<BookDTO>();
+
+                foreach (var book in books)
                 {
-                    Id = book.IdBook,
-                    Title = book.TitleBook,
-                    ImageURL = book.ImageUrl,
-                    AverageRating = _service.GetAverageRatingAsync(book.IdBook).Result,
-                    IdCategory = book.IdCategory,
-                    YearPublication = book.YearPublication
-                })
-                .ToList();
+                    var authors = await _service.GetAuthorsFullNameAsync(book.IdBook);
+                    var averageRating = await _service.GetAverageRatingAsync(book.IdBook);
+
+                    allBooks.Add(new BookDTO
+                    {
+                        Id = book.IdBook,
+                        Title = book.TitleBook,
+                        Authors = authors,
+                        ImageURL = book.ImageUrl,
+                        AverageRating = averageRating,
+                        IdCategory = book.IdCategory,
+                        YearPublication = book.YearPublication
+                    });
+                }
 
                 return Ok(allBooks);
 
