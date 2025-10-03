@@ -20,6 +20,13 @@ const routes = [
     props: true,
     meta: { entityType: 'Подборка', trackView: true },
   },
+  { path: '/reviews', component: () => import('@/views/ReviewView.vue') },
+  {
+    path: '/reviews/:id',
+    component: () => import('@/views/ReviewPage.vue'),
+    props: true,
+    meta: { entityType: 'Рецензия', trackView: true },
+  },
   {
     path: '/settings',
     component: () => import('@/views/UserSettings.vue'),

@@ -126,7 +126,7 @@ namespace FrogLib.Server.Services
                     Title = r.TitleReview,
                     Content = r.TextReview,
                     Book = book,
-                    PositiveRating = positiveRating,
+                    Rating = positiveRating,
                     CreatedDate = r.CreatedDate,
                     UserName = r.IdUserNavigation.NameUser,
                     UserURL = r.IdUserNavigation.ProfileImageUrl

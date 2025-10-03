@@ -43,7 +43,9 @@ const truncatedDescription = computed(() => {
 
     <div class="review-content">
       <p class="review-text" v-html="truncatedDescription"></p>
-      <button class="read-more-link">Читать полностью →</button>
+      <RouterLink :to="`/reviews/${id}`" class="read-more-link"
+        >Читать полностью →</RouterLink
+      >
     </div>
 
     <div class="review-footer">

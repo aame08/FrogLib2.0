@@ -11,4 +11,12 @@ export default {
   getPopularReviews() {
     return apiClient.get('/popular-reviews').then((response) => response.data);
   },
+  getAllReviews() {
+    return apiClient.get('/all-reviews').then((response) => response.data);
+  },
+  getReviewInfo(idReview) {
+    return apiClient
+      .get(`/reviews/${idReview}`)
+      .then((response) => response.data);
+  },
 };

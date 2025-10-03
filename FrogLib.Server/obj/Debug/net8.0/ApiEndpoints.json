@@ -349,6 +349,16 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.ReviewsController",
+    "Method": "GetAllReviewsAsync",
+    "RelativePath": "api/Reviews/all-reviews",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.ReviewsController",
     "Method": "GetPopularReviewsAsync",
     "RelativePath": "api/Reviews/popular-reviews",
     "HttpMethod": "GET",
@@ -366,6 +376,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.ReviewsController",
+    "Method": "GetReviewInfoAsync",
+    "RelativePath": "api/Reviews/reviews/{idReview}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idReview",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserActivityController",

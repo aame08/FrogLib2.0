@@ -70,7 +70,7 @@ const handleRefresh = (event) => {
       <h2 class="section-title">✧ Комментарии ({{ countComments }}) ✧</h2>
 
       <div class="comments-sort">
-        <label class="text-sm">Сортировка:</label>
+        <!-- <label class="text-sm">Сортировка:</label> -->
         <select class="sort-select" v-model="selectedSort">
           <option value="newest">Сначала новые</option>
           <option value="oldest">Сначала старые</option>
@@ -129,17 +129,16 @@ const handleRefresh = (event) => {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .section-title {
-  margin-bottom: 20px;
   padding-bottom: 10px;
   font-size: 1.5rem;
   color: var(--accent-color);
-  border-bottom: 2px solid var(--accent-color);
 }
 
 .section-title::after {

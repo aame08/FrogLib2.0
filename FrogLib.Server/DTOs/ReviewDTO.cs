@@ -7,7 +7,7 @@
         public string Content { get; set; }
         public BookDTO Book { get; set; }
         public int UserRating { get; set; }
-        public double PositiveRating { get; set; }
+        public double Rating { get; set; }
         public int CountView { get; set; }
         public DateOnly CreatedDate { get; set; }
         public string UserName { get; set; }

@@ -129,8 +129,8 @@ namespace FrogLib.Server.Controllers
 
                 var ratingInfo = await _service.GetRatingAsync(collection.IdCollection);
                 var countView = await _service.GetCountViewAsync(collection.IdCollection);
-                var comments = await _service.GetCommentsForCollectionAsync(collection.IdCollection);
                 var countComments = await _service.GetCountCommentsAsync(collection.IdCollection);
+                var comments = await _service.GetCommentsForCollectionAsync(collection.IdCollection);
                 var books = await _service.GetBooksForCollectionAsync(collection.IdCollection);
 
                 return Ok(new

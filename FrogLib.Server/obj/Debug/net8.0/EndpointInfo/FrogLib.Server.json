@@ -616,6 +616,41 @@
         }
       }
     },
+    "/api/Reviews/all-reviews": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Reviews/reviews/{idReview}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "name": "idReview",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/UserActivity/get-statistics": {
       "get": {
         "tags": [
@@ -1385,10 +1420,6 @@
             "type": "string",
             "nullable": true
           },
-          "previewLink": {
-            "type": "string",
-            "nullable": true
-          },
           "titleBook": {
             "type": "string",
             "nullable": true
@@ -2060,7 +2091,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "positiveRating": {
+          "rating": {
             "type": "number",
             "format": "double"
           },

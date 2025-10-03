@@ -46,10 +46,10 @@ namespace FrogLib.Server.Services
                 Id = book.IdBook,
                 Title = book.TitleBook,
                 ImageURL = book.ImageUrl,
+                Description = book.DescriptionBook,
                 AverageRating = averageRatingBook,
                 Authors = authors
             };
-
         }
 
         public Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview)

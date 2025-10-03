@@ -293,7 +293,7 @@ const logout = () => {
           <RouterLink to="/">Главная</RouterLink>
           <RouterLink to="/books">Книги</RouterLink>
           <RouterLink to="/collections">Подборки</RouterLink>
-          <RouterLink to="/">Рецензии</RouterLink>
+          <RouterLink to="/reviews">Рецензии</RouterLink>
         </template>
       </div>
     </div>

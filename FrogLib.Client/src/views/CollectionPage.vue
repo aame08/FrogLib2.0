@@ -199,6 +199,13 @@ watch(
                   positive: collection.rating?.rating > 0,
                   negative: collection.rating?.rating < 0,
                 }"
+                :title="`${collection.rating?.likes || 0} ${pluralize(
+                  collection.rating?.likes || 0,
+                  'лайк'
+                )}, ${collection.rating?.dislikes || 0} ${pluralize(
+                  collection.rating?.dislikes || 0,
+                  'дизлайк'
+                )}`"
               >
                 {{ collection.rating?.rating || 0 }}
               </span>
@@ -303,7 +310,6 @@ watch(
 .author-avatar {
   width: 60px;
   height: 60px;
-  object-fit: cover;
   border-radius: 50%;
 }
 
