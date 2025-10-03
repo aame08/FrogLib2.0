@@ -9,6 +9,7 @@
         public int IdCategory { get; set; }
         public short YearPublication { get; set; }
         public string Authors { get; set; }
+        public string Description { get; set; }
         public int TotalRatings { get; set; }
         public int TotalUserBookmarks { get; set; }
         public int CountView { get; set; }

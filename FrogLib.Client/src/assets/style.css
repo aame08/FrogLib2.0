@@ -11,9 +11,15 @@
   --light-grey: #d3d3d3;
   --red: #dc143c;
   --dark-red: #8b0000;
+  --light-red: #eec2c2;
   --black: #00000080;
+  --green: #008000;
+  --yellow: #ffa500;
+  --blue: #1e90ff;
+  --pink: #ff69b4;
   --shadow: 0 4px 12px #0000000d;
   --shadow-hover: 0 6px 16px #0000001a;
+  --border: #e0e0e0;
 }
 
 .pink-theme {
@@ -231,4 +237,52 @@ legend {
 
 .forbidden-word {
   color: var(--red);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 8px 15px;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--bg);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination button:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+  color: var(--bg);
+}
+
+.pagination button.active {
+  background-color: var(--accent-color);
+  color: var(--bg);
+  border-color: var(--accent-color);
+}
+
+.status-reading {
+  color: var(--green);
+}
+
+.status-planned {
+  color: var(--yellow);
+}
+
+.status-completed {
+  color: var(--blue);
+}
+
+.status-dropped {
+  color: var(--red);
+}
+
+.status-favorite {
+  color: var(--pink);
 }

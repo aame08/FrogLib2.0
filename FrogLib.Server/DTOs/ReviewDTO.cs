@@ -12,6 +12,6 @@
         public DateOnly CreatedDate { get; set; }
         public string UserName { get; set; }
         public string UserURL { get; set; }
-        //public List<CommentDTO> Comments { get; set; }
+        public List<CommentDTO> Comments { get; set; }
     }
 }

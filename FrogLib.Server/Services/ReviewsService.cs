@@ -11,7 +11,7 @@ namespace FrogLib.Server.Services
         Task<int> GetCountCommentsAsync(int idReview);
         Task<int> GetBookUserRatingAsync(int idBook, int idUser);
         Task<BookDTO> GetBookForReviewAsync(int idReview);
-        //Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview);
+        Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview);
     }
 
     public class ReviewsService(Froglib2Context context, Lazy<IBooksService> booksService) : BaseEntityService(context, "Рецензия"), IReviewsService
@@ -52,9 +52,9 @@ namespace FrogLib.Server.Services
 
         }
 
-        //public Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview)
-        //{
-        //    return GetCommentsAsync(idReview);
-        //}
+        public Task<List<CommentDTO>> GetCommentsForReviewAsync(int idReview)
+        {
+            return GetCommentsAsync(idReview);
+        }
     }
 }

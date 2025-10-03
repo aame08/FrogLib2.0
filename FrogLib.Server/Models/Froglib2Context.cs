@@ -131,9 +131,6 @@ public partial class Froglib2Context : DbContext
                 .HasMaxLength(10)
                 .HasColumnName("language_book");
             entity.Property(e => e.PageCount).HasColumnName("page_count");
-            entity.Property(e => e.PreviewLink)
-                .HasColumnType("text")
-                .HasColumnName("preview_link");
             entity.Property(e => e.TitleBook)
                 .HasMaxLength(255)
                 .HasColumnName("title_book");

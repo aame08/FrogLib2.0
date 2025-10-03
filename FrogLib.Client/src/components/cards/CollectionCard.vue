@@ -68,7 +68,9 @@ const prevSlide = () => {
 
     <div class="collection-content">
       <p class="collection-text" v-html="truncatedDescription"></p>
-      <button class="read-more-link">Посмотреть подборку →</button>
+      <RouterLink :to="`/collections/${id}`" class="read-more-link"
+        >Посмотреть подборку →</RouterLink
+      >
     </div>
 
     <div class="collection-footer">

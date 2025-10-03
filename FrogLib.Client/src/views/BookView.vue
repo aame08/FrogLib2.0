@@ -288,32 +288,4 @@ const goToPage = (page) => {
   flex-wrap: wrap;
   gap: 15px;
 }
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-.pagination button {
-  padding: 8px 15px;
-  border: 1px solid var(--accent-color);
-  border-radius: 4px;
-  background-color: var(--bg);
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.pagination button:hover {
-  background-color: var(--hover-color);
-  border-color: var(--hover-color);
-  color: var(--bg);
-}
-
-.pagination button.active {
-  background-color: var(--accent-color);
-  color: var(--bg);
-  border-color: var(--accent-color);
-}
 </style>

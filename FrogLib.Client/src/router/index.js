@@ -11,6 +11,16 @@ const routes = [
     meta: { entityType: 'Книга', trackView: true },
   },
   {
+    path: '/collections',
+    component: () => import('@/views/CollectionView.vue'),
+  },
+  {
+    path: '/collections/:id',
+    component: () => import('@/views/CollectionPage.vue'),
+    props: true,
+    meta: { entityType: 'Подборка', trackView: true },
+  },
+  {
     path: '/settings',
     component: () => import('@/views/UserSettings.vue'),
     meta: { requiresAuth: true },

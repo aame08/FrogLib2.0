@@ -118,7 +118,7 @@ namespace FrogLib.Server.Services
             {
                 var rating = await _reviewsService.GetRatingAsync(r.IdReview);
                 var book = await _reviewsService.GetBookForReviewAsync(r.IdReview);
-                var positiveRating = rating.PositivePercent;
+                var positiveRating = rating.Rating;
 
                 result.Add(new ReviewDTO
                 {
@@ -149,14 +149,14 @@ namespace FrogLib.Server.Services
             {
                 var rating = await _collectionsService.GetRatingAsync(c.IdCollection);
                 var countView = await _collectionsService.GetCountViewAsync(c.IdCollection);
-                var positiveRating = rating.PositivePercent;
+                var positiveRating = rating.Rating;
 
                 result.Add(new CollectionDTO
                 {
                     Id = c.IdCollection,
                     Title = c.TitleCollection,
                     Description = c.DescriptionCollection,
-                    PositiveRating = positiveRating,
+                    Rating = positiveRating,
                     Books = c.IdBooks
                         .Select(bc => new BookDTO
                         {

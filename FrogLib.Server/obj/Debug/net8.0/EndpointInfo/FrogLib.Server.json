@@ -543,6 +543,41 @@
         }
       }
     },
+    "/api/Collections/all-collections": {
+      "get": {
+        "tags": [
+          "Collections"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Collections/collections/{idCollection}": {
+      "get": {
+        "tags": [
+          "Collections"
+        ],
+        "parameters": [
+          {
+            "name": "idCollection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Reviews/popular-reviews": {
       "get": {
         "tags": [
@@ -957,6 +992,343 @@
           }
         }
       }
+    },
+    "/api/UserInteractionWithEntities/get-entity-rating": {
+      "get": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "IdUser",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "IdEntity",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TypeEntity",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Rating",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/update-entity-rating": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntityRatingDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntityRatingDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntityRatingDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/delete-entity-rating": {
+      "delete": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "IdUser",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "IdEntity",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TypeEntity",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Rating",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/is-collection-saved/{idUser}/{idCollection}": {
+      "get": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idCollection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/like-collection/{idUser}/{idCollection}": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idCollection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/unlike-collection/{idUser}/{idCollection}": {
+      "delete": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idCollection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/add-comment": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "parameters": [
+          {
+            "name": "IdUser",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "IdEntity",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TypeEntity",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Text",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IdParentComment",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserInteractionWithEntities/add-reply": {
+      "post": {
+        "tags": [
+          "UserInteractionWithEntities"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1116,6 +1488,10 @@
             "type": "string",
             "nullable": true
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "totalRatings": {
             "type": "integer",
             "format": "int32"
@@ -1246,7 +1622,7 @@
             "type": "string",
             "nullable": true
           },
-          "positiveRating": {
+          "rating": {
             "type": "number",
             "format": "double"
           },
@@ -1283,6 +1659,13 @@
           },
           "userURL": {
             "type": "string",
+            "nullable": true
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDTO"
+            },
             "nullable": true
           }
         },
@@ -1366,6 +1749,103 @@
           },
           "parentComment": {
             "$ref": "#/components/schemas/Comment"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommentDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "authorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorURL": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "isReply": {
+            "type": "boolean"
+          },
+          "replies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDTO"
+            },
+            "nullable": true
+          },
+          "rating": {
+            "$ref": "#/components/schemas/RatingInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommentRequest": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeEntity": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "idParentComment": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntityRatingDTO": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEntity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeEntity": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1480,6 +1960,24 @@
         },
         "additionalProperties": false
       },
+      "RatingInfo": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "likes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dislikes": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "RefreshTokenRequest": {
         "type": "object",
         "properties": {
@@ -1580,6 +2078,13 @@
           },
           "userURL": {
             "type": "string",
+            "nullable": true
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDTO"
+            },
             "nullable": true
           }
         },

@@ -13,4 +13,12 @@ export default {
       .get('/popular-collections')
       .then((response) => response.data);
   },
+  getAllCollections() {
+    return apiClient.get('/all-collections').then((response) => response.data);
+  },
+  getCollectionInfo(idCollection) {
+    return apiClient
+      .get(`/collections/${idCollection}`)
+      .then((response) => response.data);
+  },
 };

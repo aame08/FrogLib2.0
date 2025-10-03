@@ -303,6 +303,32 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.CollectionsController",
+    "Method": "GetAllCollectionsAsync",
+    "RelativePath": "api/Collections/all-collections",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.CollectionsController",
+    "Method": "GetCollectionInfoAsync",
+    "RelativePath": "api/Collections/collections/{idCollection}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idCollection",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.CollectionsController",
     "Method": "GetPopularCollectionsAsync",
     "RelativePath": "api/Collections/popular-collections",
     "HttpMethod": "GET",
@@ -389,7 +415,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "GetBookEvaluation",
+    "Method": "GetBookEvaluationAsync",
     "RelativePath": "api/UserInteractionWithBooks/book-evaluation/{idUser}/{idBook}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -420,7 +446,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "DeleteBookEvalution",
+    "Method": "DeleteBookEvalutionAsync",
     "RelativePath": "api/UserInteractionWithBooks/delete-book-evaluation/{idUser}/{idBook}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -441,7 +467,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "DeleteUserBook",
+    "Method": "DeleteUserBookAsync",
     "RelativePath": "api/UserInteractionWithBooks/delete-user-book/{idUser}/{idBook}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -462,7 +488,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "UpdateBookEvaluation",
+    "Method": "UpdateBookEvaluationAsync",
     "RelativePath": "api/UserInteractionWithBooks/update-book-evaluation/{idUser}/{idBook}/{evaluation}",
     "HttpMethod": "POST",
     "IsController": true,
@@ -488,7 +514,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "UpdateUserBook",
+    "Method": "UpdateUserBookAsync",
     "RelativePath": "api/UserInteractionWithBooks/update-user-book/{idUser}/{idBook}/{listType}",
     "HttpMethod": "POST",
     "IsController": true,
@@ -514,7 +540,7 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithBooksController",
-    "Method": "GetUserBook",
+    "Method": "GetUserBookAsync",
     "RelativePath": "api/UserInteractionWithBooks/user-book/{idUser}/{idBook}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -561,6 +587,58 @@
   },
   {
     "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "AddCommentAsync",
+    "RelativePath": "api/UserInteractionWithEntities/add-comment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdUser",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdEntity",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TypeEntity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Text",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdParentComment",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "AddReplyCommentAsync",
+    "RelativePath": "api/UserInteractionWithEntities/add-reply",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "FrogLib.Server.DTOs.CommentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
     "Method": "AddReviewAsync",
     "RelativePath": "api/UserInteractionWithEntities/add-review",
     "HttpMethod": "POST",
@@ -570,6 +648,167 @@
       {
         "Name": "request",
         "Type": "FrogLib.Server.DTOs.ReviewRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "DeleteEntityRatingAsync",
+    "RelativePath": "api/UserInteractionWithEntities/delete-entity-rating",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdUser",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdEntity",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TypeEntity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Rating",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "GetEntityRatingAsync",
+    "RelativePath": "api/UserInteractionWithEntities/get-entity-rating",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdUser",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdEntity",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TypeEntity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Rating",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "IsCollectionSavedAsync",
+    "RelativePath": "api/UserInteractionWithEntities/is-collection-saved/{idUser}/{idCollection}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idCollection",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "LikeCollectionAsync",
+    "RelativePath": "api/UserInteractionWithEntities/like-collection/{idUser}/{idCollection}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idCollection",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "UnlikeCollectionAsync",
+    "RelativePath": "api/UserInteractionWithEntities/unlike-collection/{idUser}/{idCollection}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idCollection",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FrogLib.Server.Controllers.UserInteractionWithEntitiesController",
+    "Method": "UpdateEntityRatingAsync",
+    "RelativePath": "api/UserInteractionWithEntities/update-entity-rating",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "FrogLib.Server.DTOs.EntityRatingDTO",
         "IsRequired": true
       }
     ],

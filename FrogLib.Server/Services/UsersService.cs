@@ -9,6 +9,7 @@ namespace FrogLib.Server.Services
         int? GetCurrentUserId(ClaimsPrincipal user);
         bool IsAuthorizedUser(ClaimsPrincipal user, int idUser);
         Task<bool> UserExistsAsync(int idUser);
+        Task<string> GetRoleUserAsync(int idUser);
         Task<bool> ObjectExistsAsync(string typeObject, int idObject);
     }
 
@@ -35,6 +36,18 @@ namespace FrogLib.Server.Services
             return await _context.Users.AnyAsync(u => u.IdUser == idUser);
         }
 
+        public async Task<string> GetRoleUserAsync(int idUser)
+        {
+            if (!await UserExistsAsync(idUser))
+            {
+                return "";
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
+
+            return user.NameRole;
+        }
+
         public async Task<bool> ObjectExistsAsync(string typeObject, int idObject)
         {
             switch (typeObject)
@@ -45,6 +58,8 @@ namespace FrogLib.Server.Services
                     return await _context.Reviews.AnyAsync(r => r.IdReview == idObject);
                 case "Подборка":
                     return await _context.Collections.AnyAsync(c => c.IdCollection == idObject);
+                case "Комментарий":
+                    return await _context.Comments.AnyAsync(c => c.IdComment == idObject);
                 default:
                     return false;
             }

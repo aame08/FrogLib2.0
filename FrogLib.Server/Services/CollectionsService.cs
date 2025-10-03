@@ -9,7 +9,7 @@ namespace FrogLib.Server.Services
         Task<RatingInfo> GetRatingAsync(int idCollection);
         Task<int> GetCountViewAsync(int idCollection);
         Task<int> GetCountCommentsAsync(int idCollection);
-        //Task<List<CommentDTO>> GetCommentsForCollectionAsync(int idCollection);
+        Task<List<CommentDTO>> GetCommentsForCollectionAsync(int idCollection);
         Task<List<BookDTO>> GetBooksForCollectionAsync(int idCollection);
     }
 
@@ -18,10 +18,10 @@ namespace FrogLib.Server.Services
         private readonly Froglib2Context _context = context;
         private readonly Lazy<IBooksService> _booksService = booksService;
 
-        //public Task<List<CommentDTO>> GetCommentsForCollectionAsync(int idCollection)
-        //{
-        //    return GetCommentsAsync(idCollection);
-        //}
+        public Task<List<CommentDTO>> GetCommentsForCollectionAsync(int idCollection)
+        {
+            return GetCommentsAsync(idCollection);
+        }
 
         public async Task<List<BookDTO>> GetBooksForCollectionAsync(int idCollection)
         {
@@ -35,13 +35,16 @@ namespace FrogLib.Server.Services
             foreach (var b in collection.IdBooks)
             {
                 var averageRating = await _booksService.Value.GetAverageRatingAsync(b.IdBook);
+                var authors = await _booksService.Value.GetAuthorsFullNameAsync(b.IdBook);
 
                 books.Add(new BookDTO
                 {
                     Id = b.IdBook,
                     Title = b.TitleBook,
                     ImageURL = b.ImageUrl,
-                    AverageRating = averageRating
+                    AverageRating = averageRating,
+                    Description = b.DescriptionBook,
+                    Authors = authors
                 });
             }
 

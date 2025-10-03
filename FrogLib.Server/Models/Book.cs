@@ -12,8 +12,6 @@ public partial class Book
 
     public string ImageUrl { get; set; } = null!;
 
-    public string PreviewLink { get; set; } = null!;
-
     public string TitleBook { get; set; } = null!;
 
     public string DescriptionBook { get; set; } = null!;

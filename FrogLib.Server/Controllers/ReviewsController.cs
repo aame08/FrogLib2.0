@@ -31,7 +31,7 @@ namespace FrogLib.Server.Controllers
                     Content = r.TextReview,
                     Book = _service.GetBookForReviewAsync(r.IdReview).Result,
                     UserRating = _service.GetBookUserRatingAsync(r.IdBook, r.IdUser).Result,
-                    PositiveRating = _service.GetRatingAsync(r.IdReview).Result.PositivePercent,
+                    PositiveRating = _service.GetRatingAsync(r.IdReview).Result.Rating,
                     CountView = _service.GetCountViewAsync(r.IdReview).Result,
                     UserName = r.IdUserNavigation.NameUser,
                     UserURL = r.IdUserNavigation.ProfileImageUrl,

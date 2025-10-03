@@ -566,7 +566,7 @@ watch(
 .book-tabs {
   display: flex;
   margin-bottom: 30px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border);
 }
 
 .tab-btn {

@@ -292,7 +292,7 @@ const logout = () => {
         <template v-if="!isAuthenticated || userRole === 'Пользователь'">
           <RouterLink to="/">Главная</RouterLink>
           <RouterLink to="/books">Книги</RouterLink>
-          <RouterLink to="/">Подборки</RouterLink>
+          <RouterLink to="/collections">Подборки</RouterLink>
           <RouterLink to="/">Рецензии</RouterLink>
         </template>
       </div>

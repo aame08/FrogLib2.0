@@ -1,14 +1,14 @@
 <!-- СДЕЛАТЬ РЕДАКТИРОВАНИЕ -->
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import booksService from '@/services/booksService';
 import userWithEntitiesService from '@/services/userWithEntitiesService';
 
 const props = defineProps({
-  book: { type: Object, required: true },
+  book: { type: Object, default: null },
   idUser: { type: Number, default: 0 },
 });
 
@@ -41,7 +41,21 @@ const getAllBooks = async () => {
     console.error('Ошибка при загрузке книг:', error);
   }
 };
-getAllBooks();
+
+const addBookToSelection = (book) => {
+  if (book && !selectedBooks.value.some((b) => b.id === book.id)) {
+    selectedBooks.value.push(book);
+  }
+};
+
+const initialize = async () => {
+  await getAllBooks();
+
+  if (props.book) {
+    addBookToSelection(props.book);
+  }
+};
+initialize();
 
 const searchBooks = () => {
   if (!searchQuery.value.trim()) {
@@ -114,6 +128,15 @@ const submitCollection = async () => {
 const closeForm = () => {
   emit('close');
 };
+
+watch(
+  () => props.book,
+  (newBook) => {
+    if (newBook) {
+      addBookToSelection(newBook);
+    }
+  }
+);
 </script>
 
 <template>
@@ -368,7 +391,7 @@ const closeForm = () => {
   max-height: 300px;
   overflow-y: auto;
   background: var(--bg);
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 4px;
 }
 
@@ -379,7 +402,7 @@ const closeForm = () => {
   padding: 15px;
   cursor: pointer;
   transition: background-color 0.2s;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border);
 }
 
 .book-result-item:hover {

@@ -12,25 +12,26 @@ namespace FrogLib.Server.Services
         public async Task<RatingInfo> GetRatingAsync(int idEntity)
         {
             var totalRatings = await _context.Entityratings
-                .CountAsync(er => er.TypeEntity == _typeObject && er.IdEntity == idEntity);
-            if (totalRatings == 0)
+                .Where(er => er.TypeEntity == _typeObject && er.IdEntity == idEntity)
+                .ToListAsync();
+
+            if (!totalRatings.Any())
             {
                 return new RatingInfo
                 {
-                    PositivePercent = 0,
+                    Rating = 0,
                     Likes = 0,
                     Dislikes = 0
                 };
             }
 
-            var likes = await _context.Entityratings
-                .CountAsync(er => er.TypeEntity == _typeObject && er.IdEntity == idEntity && er.IsLike == 1);
-
-            var dislikes = totalRatings - likes;
+            var likes = totalRatings.Count(er => er.IsLike == 1);
+            var dislikes = totalRatings.Count(er => er.IsLike == 0);
+            var rating = likes - dislikes;
 
             return new RatingInfo
             {
-                PositivePercent = (likes * 100.0) / totalRatings,
+                Rating = rating,
                 Likes = likes,
                 Dislikes = dislikes
             };
@@ -48,37 +49,66 @@ namespace FrogLib.Server.Services
                 .CountAsync(c => c.TypeEntity == _typeObject && c.IdEntity == idEntity);
         }
 
-        //public async Task<List<CommentDTO>> GetCommentsAsync(int idEntity)
-        //{
-        //    var allComments = await _context.Comments
-        //        .Where(c => c.TypeEntity == _typeObject && c.IdEntity == idEntity)
-        //        .Include(c => c.IdUserNavigation)
-        //        .ToListAsync();
+        public async Task<List<CommentDTO>> GetCommentsAsync(int idEntity)
+        {
+            var allComments = await _context.Comments
+                .Where(c => c.TypeEntity == _typeObject && c.IdEntity == idEntity)
+                .Include(c => c.IdUserNavigation)
+                .ToListAsync();
 
-        //    var comments = allComments
-        //        .Where(c => c.ParentCommentId == null)
-        //        .Select(c => MapComment(c, allComments))
-        //        .ToList();
+            var commentIds = allComments.Select(c => c.IdComment).ToList();
 
-        //    return comments;
-        //}
+            var commentRatings = await _context.Entityratings
+                .Where(er => er.TypeEntity == "Комментарий" && commentIds.Contains(er.IdEntity))
+                .ToListAsync();
 
-        //private CommentDTO MapComment(Comment comment, List<Comment> allComments)
-        //{
-        //    return new CommentDTO
-        //    {
-        //        Id = comment.IdComment,
-        //        Author = comment.IdUserNavigation.NameUser,
-        //        AuthorURL = comment.IdUserNavigation.ProfileImageUrl,
-        //        Date = comment.DateComment,
-        //        Content = comment.TextComment,
-        //        Status = comment.StatusComment,
-        //        IsReply = comment.ParentCommentId != null,
-        //        Replies = allComments
-        //            .Where(r => r.ParentCommentId == comment.IdComment)
-        //            .Select(r => MapComment(r, allComments))
-        //            .ToList()
-        //    };
-        //}
+            var ratingsByComment = commentRatings
+                .GroupBy(er => er.IdEntity)
+                .ToDictionary(
+                    g => g.Key,
+                    g => new RatingInfo
+                    {
+                        Likes = g.Count(er => er.IsLike == 1),
+                        Dislikes = g.Count(er => er.IsLike == 0),
+                        Rating = g.Count(er => er.IsLike == 1) - g.Count(er => er.IsLike == 0)
+                    }
+                );
+
+            var commentsById = allComments.ToDictionary(c => c.IdComment);
+
+            var rootComments = allComments.Where(c => c.ParentCommentId == null).ToList();
+            var commentDTOs = rootComments.Select(c => BuildCommentTree(c, commentsById, ratingsByComment)).ToList();
+
+            return commentDTOs;
+        }
+
+        private CommentDTO BuildCommentTree(Comment comment, Dictionary<int, Comment> commentsById, Dictionary<int, RatingInfo> ratingsByComment)
+        {
+            var ratingInfo = ratingsByComment.GetValueOrDefault(comment.IdComment, new RatingInfo
+            {
+                Rating = 0,
+                Likes = 0,
+                Dislikes = 0
+            });
+
+            var replies = commentsById.Values
+                .Where(c => c.ParentCommentId == comment.IdComment)
+                .Select(c => BuildCommentTree(c, commentsById, ratingsByComment))
+                .ToList();
+
+            return new CommentDTO
+            {
+                Id = comment.IdComment,
+                AuthorId = comment.IdUserNavigation.IdUser,
+                AuthorName = comment.IdUserNavigation.NameUser,
+                AuthorURL = comment.IdUserNavigation.ProfileImageUrl,
+                Date = comment.DateComment,
+                Text = comment.TextComment,
+                Status = comment.StatusComment,
+                IsReply = comment.ParentCommentId != null,
+                Replies = replies,
+                Rating = ratingInfo
+            };
+        }
     }
 }

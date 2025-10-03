@@ -17,7 +17,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpGet("book-evaluation/{idUser}/{idBook}")]
-        public async Task<ActionResult<int>> GetBookEvaluation(int idUser, int idBook)
+        public async Task<ActionResult<int>> GetBookEvaluationAsync(int idUser, int idBook)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpPost("update-book-evaluation/{idUser}/{idBook}/{evaluation}")]
-        public async Task<ActionResult> UpdateBookEvaluation(int idUser, int idBook, int evaluation)
+        public async Task<ActionResult> UpdateBookEvaluationAsync(int idUser, int idBook, int evaluation)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpDelete("delete-book-evaluation/{idUser}/{idBook}")]
-        public async Task<ActionResult> DeleteBookEvalution(int idUser, int idBook)
+        public async Task<ActionResult> DeleteBookEvalutionAsync(int idUser, int idBook)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpGet("user-book/{idUser}/{idBook}")]
-        public async Task<ActionResult<string>> GetUserBook(int idUser, int idBook)
+        public async Task<ActionResult<string>> GetUserBookAsync(int idUser, int idBook)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpPost("update-user-book/{idUser}/{idBook}/{listType}")]
-        public async Task<ActionResult> UpdateUserBook(int idUser, int idBook, string listType)
+        public async Task<ActionResult> UpdateUserBookAsync(int idUser, int idBook, string listType)
         {
             try
             {
@@ -192,7 +192,7 @@ namespace FrogLib.Server.Controllers
 
         [Authorize(Roles = "Пользователь")]
         [HttpDelete("delete-user-book/{idUser}/{idBook}")]
-        public async Task<ActionResult> DeleteUserBook(int idUser, int idBook)
+        public async Task<ActionResult> DeleteUserBookAsync(int idUser, int idBook)
         {
             try
             {
